@@ -46,6 +46,14 @@ static inline int map_cmp_uint(const void *arg0, const void *arg1)
  * The red-black tree consists of a root and nodes attached to this root.
  */
 
+#if defined(__GNUC__) || defined(__clang__)
+#define UNUSED __attribute__((unused))
+#define unlikely(x) __builtin_expect(!!(x), 0)
+#else
+#define UNUSED
+#define unlikely(x) x
+#endif
+
  /* Alignment macro */
  #if defined(__GNUC__) || defined(__clang__)
  #define __ALIGNED(x) __attribute__((aligned(x)))

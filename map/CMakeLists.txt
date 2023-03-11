@@ -6,7 +6,6 @@ enable_testing()
 find_package(GTest CONFIG REQUIRED)
 
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
-set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(GCC_FLAGS "-s -Os -W -Wall -Werror")
 
@@ -15,5 +14,5 @@ set(HEADER_FILES src/map.h src/map.c)
 
 add_executable(
     map
-    src/main.cpp
+    src/main.c
 )
