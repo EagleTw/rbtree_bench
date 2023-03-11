@@ -10,7 +10,7 @@
 enum {NNODES = 1000 * 1000};
 
 int main() {
-  map_t tree = map_init(int, int, map_cmp_uint);
+  map_t tree = map_new(int, int, map_cmp_uint);
 
 
   clock_t start = clock();
