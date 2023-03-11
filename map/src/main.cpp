@@ -5,12 +5,15 @@
 #include <time.h>
 #include <stdio.h>
 
+
 #include "map.h"
 
 enum {NNODES = 1000 * 1000};
 
 int main() {
-  map_t tree = map_new(int, int, map_cmp_uint);
+  printf("--- In map\n\n ---");
+
+  map_t tree = map_init(int, int, map_cmp_uint);
 
 
   clock_t start = clock();
