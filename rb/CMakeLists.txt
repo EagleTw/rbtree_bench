@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(pts-red-black-tree)
+project(rbi)
 
 enable_testing()
 
@@ -13,6 +13,6 @@ set(EXECUTABLE_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/build)
 set(HEADER_FILES src/rb.h)
 
 add_executable(
-    pts-red-black-tree
+    rbi
     src/main.cpp
 )
