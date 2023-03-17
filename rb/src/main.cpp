@@ -146,7 +146,7 @@ enum { NNODES = 1000 * 1000 };
 
 int main(int argc, char *argv[])
 {
-    printf("===== Self benchmark: map =====\n");
+    printf("===== Self benchmark: rb =====\n");
 
     node_t *nodes = new node_t[NNODES];
 
