@@ -54,14 +54,14 @@ static inline int map_cmp_uint(const void *arg0, const void *arg1)
 #define unlikely(x) x
 #endif
 
- /* Alignment macro */
- #if defined(__GNUC__) || defined(__clang__)
- #define __ALIGNED(x) __attribute__((aligned(x)))
- #elif defined(_MSC_VER)
- #define __ALIGNED(x) __declspec(align(x))
- #else /* unspported compilers */
- #define __ALIGNED(x)
- #endif
+/* Alignment macro */
+#if defined(__GNUC__) || defined(__clang__)
+#define __ALIGNED(x) __attribute__((aligned(x)))
+#elif defined(_MSC_VER)
+#define __ALIGNED(x) __declspec(align(x))
+#else /* unspported compilers */
+#define __ALIGNED(x)
+#endif
 
 typedef struct map_node {
     void *key, *data;
