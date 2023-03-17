@@ -1,4 +1,4 @@
-# rbtree_benchmark
+# rbtree_bench
 
 Machine spec: 
   - Core: Apple M1 Pro (10 core)
