@@ -1,4 +1,4 @@
-# rb_tree_benchmark
+# rbtree_benchmark
 
 | action type  | map      | rb       |
 | ------------ | -------- | -------- |
