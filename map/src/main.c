@@ -19,7 +19,7 @@ enum { NNODES = 1000 * 1000 };
 
 int main()
 {
-    printf("--- In map ---\n");
+    printf("===== Self benchmark: map =====\n");
 
     map_t tree = map_init(int, int, map_cmp_int);
 
