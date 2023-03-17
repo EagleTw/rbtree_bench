@@ -35,7 +35,7 @@ int main()
     }
 
     /* This is not a reconmended way to randomize stuff, just a simple test */
-    /* I know ... */
+    /* I know MT19937 might be better */
     srand((unsigned) time(NULL));
     for (int i = 0; i < 1e7; i++) {
         int pos_a = rand() % NNODES;
