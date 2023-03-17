@@ -1,8 +1,3 @@
-cmake_minimum_required(VERSION 3.5)
-project(map)
-
-enable_testing()
-
 set(CMAKE_C_STANDARD 99)
 set(CMAKE_C_STANDARD_REQUIRED TRUE)
 set(CMAKE_VERBOSE_MAKEFILE TRUE)
