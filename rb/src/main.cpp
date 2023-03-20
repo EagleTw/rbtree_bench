@@ -146,8 +146,6 @@ enum { NNODES = 1000 * 1000 };
 
 int main(int argc, char *argv[])
 {
-    printf("===== Self benchmark: rb =====\n");
-
     node_t *nodes = new node_t[NNODES];
 
     std::default_random_engine dre;
@@ -164,14 +162,13 @@ int main(int argc, char *argv[])
 
     clock_t start = clock();
 
-    for (int i = 0; i < NNODES; ++i) {
+    for (int i = 0; i < NNODES; ++i)
         tree_insert(&tree, nodes + i);
-    }
 
     cout << "  tree_insert time: "
          << (double) (clock() - start) / CLOCKS_PER_SEC << " seconds" << endl;
 
-    cout << "    RB depth: " << getDepth(tree.rbt_root) << endl;
+    cout << "    RB depth: " << getDepth(tree.root) << endl;
 
     start = clock();
 
