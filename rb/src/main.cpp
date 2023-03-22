@@ -9,6 +9,7 @@
 
 #include "rb.h"
 
+#if 0
 using std::cout;
 using std::endl;
 
@@ -203,6 +204,12 @@ int main(int argc, char *argv[])
     tree_destroy(&tree, NULL, NULL);
 
     cout << endl;
+
+    return 0;
+}
+#endif
+
+int main() {
 
     return 0;
 }
