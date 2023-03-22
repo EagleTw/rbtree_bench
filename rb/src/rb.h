@@ -632,3 +632,24 @@
         x_prefix##destroy_recurse(rbtree, rbtree->root, cb, arg);              \
         rbtree->root = NULL;                                                   \
     }
+
+/* making into same interface */
+/* Constructor */
+map_t map_new(size_t, size_t, int (*)(const void *, const void *));
+
+/* Add function */
+bool map_insert(map_t, void *, void *);
+
+/* Get functions */
+void map_find(map_t, map_iter_t *, void *);
+bool map_empty(map_t);
+
+/* Iteration */
+bool map_at_end(map_t, map_iter_t *);
+
+/* Remove functions */
+void map_erase(map_t, map_iter_t *);
+void map_clear(map_t);
+
+/* Destructor */
+void map_delete(map_t);
