@@ -2,6 +2,8 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /* C macro implementation of left-leaning 2-3 red-black trees.  Parent
  * pointers are not used, and color bits are stored in the least significant
@@ -635,21 +637,82 @@
 
 /* making into same interface */
 /* Constructor */
-map_t map_new(size_t, size_t, int (*)(const void *, const void *));
+// map_t map_new(size_t, size_t, int (*)(const void *, const void *));
 
-/* Add function */
-bool map_insert(map_t, void *, void *);
+// /* Add function */
+// bool map_insert(map_t, void *, void *);
+//
+// /* Get functions */
+// void map_find(map_t, map_iter_t *, void *);
+// bool map_empty(map_t);
+//
+// /* Iteration */
+// bool map_at_end(map_t, map_iter_t *);
+//
+// /* Remove functions */
+// void map_erase(map_t, map_iter_t *);
+// void map_clear(map_t);
+//
+// /* Destructor */
+// void map_delete(map_t);
+
+// sould be in C.
+typedef struct node_ node_t;
+typedef struct node_ {
+    int *key;
+    int *val;
+    rb_node(node_t) link;
+} node_t;
+
+enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
+
+/* Unsigned integer comparison */
+static inline int uint_key_cmp(const  node_t *arg0, const node_t *arg1)
+{
+    unsigned int *a = (unsigned int *) arg0->key, *b = (unsigned int *) arg1->key;
+    return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
+}
+
+typedef rb_tree(node_t) map_t;
+rb_gen(static, internal_map_, map_t, node_t, link, uint_key_cmp);
+
+#define map_init(key_type, element_type, __func) \
+    map_new(sizeof(key_type), sizeof(element_type), __func)
+
+map_t *map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
+{
+    map_t *tree = malloc(sizeof(map_t));
+    internal_map_new(tree);
+    return tree;
+}
+
+ /* Add function */
+bool map_insert(map_t *tree, void *key, void *val)
+{
+    node_t *node = malloc(sizeof(node_t));
+    node->key = key;
+    node->val = val;
+    internal_map_insert(tree, node);
+    return true;
+}
 
 /* Get functions */
-void map_find(map_t, map_iter_t *, void *);
-bool map_empty(map_t);
-
-/* Iteration */
-bool map_at_end(map_t, map_iter_t *);
-
-/* Remove functions */
-void map_erase(map_t, map_iter_t *);
-void map_clear(map_t);
-
-/* Destructor */
-void map_delete(map_t);
+/* 2nd arguament should be iterator */
+void map_find(map_t* tree, node_t **ret, void *key)
+{
+    node_t *tmp_node = malloc(sizeof(node_t));
+    tmp_node->key = key;
+    *ret = internal_map_search(tree, tmp_node);
+    free(tmp_node);
+}
+// bool map_empty(map_t);
+//
+// /* Iteration */
+// bool map_at_end(map_t, map_iter_t *);
+//
+// /* Remove functions */
+// void map_erase(map_t, map_iter_t *);
+// void map_clear(map_t);
+//
+// /* Destructor */
+// void map_delete(map_t);

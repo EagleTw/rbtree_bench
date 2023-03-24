@@ -8,11 +8,12 @@
 #include <random>
 
 #include "rb.h"
+#include "rb.c"
 
-#if 0
 using std::cout;
 using std::endl;
 
+/*
 struct node_;
 typedef struct node_ node_t;
 
@@ -142,6 +143,7 @@ double getDepth(T tree, T null = static_cast<T>(0))
     auto depth(doGetGepth(tree, null, 0U));
     return depth.first ? double(depth.second) / depth.first : 0;
 }
+*/
 
 enum { NNODES = 1000 * 1000 };
 
@@ -149,6 +151,7 @@ int main(int argc, char *argv[])
 {
     node_t *nodes = new node_t[NNODES];
 
+    /*
     std::default_random_engine dre;
     for (int i = 0; i < NNODES; ++i) {
         std::uniform_int_distribution<int> di(0, i);
@@ -204,12 +207,7 @@ int main(int argc, char *argv[])
     tree_destroy(&tree, NULL, NULL);
 
     cout << endl;
-
-    return 0;
-}
-#endif
-
-int main() {
+    */
 
     return 0;
 }
