@@ -684,7 +684,7 @@ rb_gen(static, internal_map_, map_t, node_t, link, uint_key_cmp);
 
 map_t *map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 {
-    map_t *tree = malloc(sizeof(map_t));
+    map_t *tree = (map_t*)malloc(sizeof(map_t));
     internal_map_new(tree);
     return tree;
 }
@@ -692,7 +692,7 @@ map_t *map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
  /* Add function */
 bool map_insert(map_t *tree, void *key, void *val)
 {
-    node_t *node = malloc(sizeof(node_t));
+    node_t *node = (node_t*)malloc(sizeof(node_t));
     node->key = key;
     node->val = val;
     internal_map_insert(tree, node);
@@ -703,7 +703,7 @@ bool map_insert(map_t *tree, void *key, void *val)
 //FIXME: 2nd arguament should be iterator
 void map_find(map_t* tree, node_t **ret, void *key)
 {
-    node_t *tmp_node = malloc(sizeof(node_t));
+    node_t *tmp_node = (node_t*)malloc(sizeof(node_t));
     tmp_node->key = key;
     *ret = internal_map_search(tree, tmp_node);
     free(tmp_node);
