@@ -21,6 +21,8 @@ int main(int argc, char *argv[])
 {
     map_t* tree = map_init(int, int, uint_key_cmp);
 
+    printf("Before insert, tree is empty? %d\n", map_empty(tree));
+
     int key[NNODES];
     int val[NNODES];
 
@@ -46,10 +48,11 @@ int main(int argc, char *argv[])
         map_insert(tree, key + i, val + i);
     }
 
+    printf("After insert tree is empty? %d\n", map_empty(tree));
+
     for (int i = 0; i < 10; i++) {
         node_t* tmp;
         map_find(tree, &tmp, key + i);
-        printf("{%p}\n", tmp);
     }
 
     return 0;

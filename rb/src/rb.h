@@ -707,15 +707,15 @@ void map_find(map_t* tree, node_t **ret, void *key)
 }
 
 bool map_empty(map_t* tree) {
-    return tree->root ? true : false;
+    return tree->root ? false : true;
 }
 // /* Iteration */
 // bool map_at_end(map_t, map_iter_t *);
 //
 /* Remove functions */
-void map_erase(map_t tree, map_iter_t *node) {
+//void map_erase(map_t tree, map_iter_t *node) {
     /* TODO */
-}
+//}
 // void map_clear(map_t);
 //
 // /* Destructor */
