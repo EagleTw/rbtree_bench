@@ -705,13 +705,17 @@ void map_find(map_t* tree, node_t **ret, void *key)
     *ret = internal_map_search(tree, tmp_node);
     free(tmp_node);
 }
-// bool map_empty(map_t);
-//
+
+bool map_empty(map_t* tree) {
+    return tree->root ? true : false;
+}
 // /* Iteration */
 // bool map_at_end(map_t, map_iter_t *);
 //
-// /* Remove functions */
-// void map_erase(map_t, map_iter_t *);
+/* Remove functions */
+void map_erase(map_t tree, map_iter_t *node) {
+    /* TODO */
+}
 // void map_clear(map_t);
 //
 // /* Destructor */
