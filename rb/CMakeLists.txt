@@ -10,6 +10,6 @@ set(EXECUTABLE_OUTPUT_PATH build)
 set(HEADER_FILES src/rb.h)
 
 add_executable(
-    rbi
+    rb
     src/main.c
 )
