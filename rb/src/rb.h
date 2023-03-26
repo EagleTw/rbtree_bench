@@ -679,6 +679,9 @@ rb_gen(static, internal_map_, map_t, node_t, link, uint_key_cmp);
 #define map_init(key_type, element_type, __func) \
     map_new(sizeof(key_type), sizeof(element_type), __func)
 
+//TODO:
+// - Read iterator and wrap
+
 map_t *map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 {
     map_t *tree = malloc(sizeof(map_t));
@@ -697,7 +700,7 @@ bool map_insert(map_t *tree, void *key, void *val)
 }
 
 /* Get functions */
-/* 2nd arguament should be iterator */
+//FIXME: 2nd arguament should be iterator
 void map_find(map_t* tree, node_t **ret, void *key)
 {
     node_t *tmp_node = malloc(sizeof(node_t));
@@ -714,7 +717,7 @@ bool map_empty(map_t* tree) {
 //
 /* Remove functions */
 //void map_erase(map_t tree, map_iter_t *node) {
-    /* TODO */
+//TODO
 //}
 // void map_clear(map_t);
 //
