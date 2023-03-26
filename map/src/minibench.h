@@ -44,5 +44,5 @@
         results[tests][i] =                                      \
             (after.tv_sec - before.tv_sec)*1000000000UL          \
             + (after.tv_nsec - before.tv_nsec);                  \
-        /*printf("results[%d][%d] : %f\n", tests, i, results[tests][i]);\*/
+        /*printf("results[%d][%d] : %f\n", tests, i, results[tests][i]);\*/\
     }
