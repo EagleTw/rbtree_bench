@@ -635,25 +635,25 @@
         rbtree->root = NULL;                                                   \
     }
 
-typedef struct node_ node_t;
+typedef struct node_ map_node;
 typedef struct node_ {
     int *key;
     int *val;
-    rb_node(node_t) link;
-} node_t;
+    rb_node(map_node) link;
+} map_node;
 
 enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 
 /* Unsigned integer comparison */
-static inline int uint_key_cmp(const  node_t *arg0, const node_t *arg1)
+static inline int uint_key_cmp(const  map_node *arg0, const map_node *arg1)
 {
     unsigned int *a = (unsigned int *) arg0->key, *b = (unsigned int *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
-typedef rb_tree(node_t) map_internal_t;
+typedef rb_tree(map_node) map_internal_t;
 typedef map_internal_t *map_t;
-rb_gen(static, internal_map_, map_internal_t, node_t, link, uint_key_cmp);
+rb_gen(static, internal_map_, map_internal_t, map_node, link, uint_key_cmp);
 
 #define map_init(key_type, element_type, __func) \
     map_new(sizeof(key_type), sizeof(element_type), __func)
@@ -671,26 +671,26 @@ map_t map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 }
 
  /* Add function */
-bool map_insert(map_t tree, void *key, void *val)
+bool map_insert(map_t obj, void *key, void *val)
 {
-    node_t *node = (node_t*)malloc(sizeof(node_t));
+    map_node *node = (map_node*)malloc(sizeof(map_node));
     node->key = key;
     node->val = val;
-    internal_map_insert(tree, node);
+    internal_map_insert(obj, node);
     return true;
 }
 
 /* Get functions */
-void map_find(map_t tree, map_iter_t *it, void *key)
+void map_find(map_t obj, map_iter_t *it, void *key)
 {
-    node_t *tmp_node = (node_t*)malloc(sizeof(node_t));
+    map_node *tmp_node = (map_node*)malloc(sizeof(map_node));
     tmp_node->key = key;
-    it->node = internal_map_search(tree, tmp_node);
+    it->node = internal_map_search(obj, tmp_node);
     free(tmp_node);
 }
 
-bool map_empty(map_t tree) {
-    return (NULL == tree->root);
+bool map_empty(map_t obj) {
+    return (NULL == obj->root);
 }
 /* Iteration */
 bool map_at_end(map_t UNUSED, map_iter_t *it) {
