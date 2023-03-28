@@ -635,28 +635,6 @@
         rbtree->root = NULL;                                                   \
     }
 
-/* making into same interface */
-/* Constructor */
-// map_t map_new(size_t, size_t, int (*)(const void *, const void *));
-
-// /* Add function */
-// bool map_insert(map_t, void *, void *);
-//
-// /* Get functions */
-// void map_find(map_t, map_iter_t *, void *);
-// bool map_empty(map_t);
-//
-// /* Iteration */
-// bool map_at_end(map_t, map_iter_t *);
-//
-// /* Remove functions */
-// void map_erase(map_t, map_iter_t *);
-// void map_clear(map_t);
-//
-// /* Destructor */
-// void map_delete(map_t);
-
-// sould be in C.
 typedef struct node_ node_t;
 typedef struct node_ {
     int *key;
@@ -673,8 +651,9 @@ static inline int uint_key_cmp(const  node_t *arg0, const node_t *arg1)
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
-typedef rb_tree(node_t) map_t;
-rb_gen(static, internal_map_, map_t, node_t, link, uint_key_cmp);
+typedef rb_tree(node_t) map_internal_t;
+typedef map_internal_t *map_t;
+rb_gen(static, internal_map_, map_internal_t, node_t, link, uint_key_cmp);
 
 #define map_init(key_type, element_type, __func) \
     map_new(sizeof(key_type), sizeof(element_type), __func)
@@ -682,15 +661,15 @@ rb_gen(static, internal_map_, map_t, node_t, link, uint_key_cmp);
 //TODO:
 // - Read iterator and wrap
 
-map_t *map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
+map_t map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 {
-    map_t *tree = (map_t*)malloc(sizeof(map_t));
+    map_t tree = (map_internal_t*)malloc(sizeof(map_internal_t));
     internal_map_new(tree);
     return tree;
 }
 
  /* Add function */
-bool map_insert(map_t *tree, void *key, void *val)
+bool map_insert(map_t tree, void *key, void *val)
 {
     node_t *node = (node_t*)malloc(sizeof(node_t));
     node->key = key;
@@ -701,7 +680,7 @@ bool map_insert(map_t *tree, void *key, void *val)
 
 /* Get functions */
 //FIXME: 2nd arguament should be iterator
-void map_find(map_t* tree, node_t **ret, void *key)
+void map_find(map_t tree, node_t **ret, void *key)
 {
     node_t *tmp_node = (node_t*)malloc(sizeof(node_t));
     tmp_node->key = key;
@@ -709,7 +688,7 @@ void map_find(map_t* tree, node_t **ret, void *key)
     free(tmp_node);
 }
 
-bool map_empty(map_t* tree) {
+bool map_empty(map_t tree) {
     return tree->root ? false : true;
 }
 // /* Iteration */
