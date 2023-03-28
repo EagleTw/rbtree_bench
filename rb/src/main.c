@@ -51,7 +51,7 @@ int main(int argc, char *argv[])
     printf("After insert tree is empty? %d\n", map_empty(tree));
 
     for (int i = 0; i < 10; i++) {
-        node_t* tmp;
+        map_node* tmp;
         map_find(tree, &tmp, key + i);
     }
 
