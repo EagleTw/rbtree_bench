@@ -51,6 +51,13 @@ BENCHMARK(20,
         "map_search", map_iter_t my_it;
         for (int i = 0; i < NNODES; i++) { map_find(tree, &my_it, key + i); });
 
-    /* There will be a funny behavior with delete */
+    //TODO: Write remove test
+    //TIMED("map_remove",
+    //    map_iter_t my_it =;
+    //    for (int i = 0; i < NNODES; i++) {
+
+    //    }
+    // )
+
     TIMED("map_delete", map_delete(tree););
 )

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-//#include "rb.c"
+#include "minibench.h"
 #include "rb.h"
 
 void swap(int *x, int *y)
@@ -17,11 +17,9 @@ void swap(int *x, int *y)
 
 enum { NNODES = 1000 * 1000 };
 
-int main(int argc, char *argv[])
-{
-    map_t* tree = map_init(int, int, uint_key_cmp);
+BENCHMARK(20,
 
-    printf("Before insert, tree is empty? %d\n", map_empty(tree));
+    map_t tree = map_init(int, int, uint_key_cmp);
 
     int key[NNODES];
     int val[NNODES];
@@ -44,16 +42,15 @@ int main(int argc, char *argv[])
         swap(&val[pos_a], &val[pos_b]);
     }
 
-    for (int i = 0; i < NNODES; i++) {
-        map_insert(tree, key + i, val + i);
-    }
+    TIMED(
+        "map_insert",
+        for (int i = 0; i < NNODES;
+             i++) { map_insert(tree, key + i, val + i); });
+    TIMED(
+        "map_search", map_iter_t my_it;
+        for (int i = 0; i < NNODES; i++) { map_find(tree, &my_it, key + i); });
 
-    printf("After insert tree is empty? %d\n", map_empty(tree));
+    //TODO: Write remove test
 
-    for (int i = 0; i < 10; i++) {
-        map_node* tmp;
-        map_find(tree, &tmp, key + i);
-    }
-
-    return 0;
-}
+    TIMED("map_delete", map_delete(tree););
+)

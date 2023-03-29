@@ -645,9 +645,10 @@ typedef struct node_ {
 enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 
 /* Unsigned integer comparison */
-static inline int uint_key_cmp(const  map_node *arg0, const map_node *arg1)
+static inline int uint_key_cmp(const map_node *arg0, const map_node *arg1)
 {
-    unsigned int *a = (unsigned int *) arg0->key, *b = (unsigned int *) arg1->key;
+    unsigned int *a = (unsigned int *) arg0->key,
+                 *b = (unsigned int *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
@@ -659,21 +660,21 @@ rb_gen(static, internal_map_, map_internal_t, map_node, link, uint_key_cmp);
     map_new(sizeof(key_type), sizeof(element_type), __func)
 
 typedef struct {
-    struct map_node *prev, *node;
+    map_node *prev, *node;
     size_t count;
 } map_iter_t;
 
 map_t map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 {
-    map_t tree = (map_internal_t*)malloc(sizeof(map_internal_t));
+    map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
     internal_map_new(tree);
     return tree;
 }
 
- /* Add function */
+/* Add function */
 bool map_insert(map_t obj, void *key, void *val)
 {
-    map_node *node = (map_node*)malloc(sizeof(map_node));
+    map_node *node = (map_node *) malloc(sizeof(map_node));
     node->key = key;
     node->val = val;
     internal_map_insert(obj, node);
@@ -683,25 +684,37 @@ bool map_insert(map_t obj, void *key, void *val)
 /* Get functions */
 void map_find(map_t obj, map_iter_t *it, void *key)
 {
-    map_node *tmp_node = (map_node*)malloc(sizeof(map_node));
+    map_node *tmp_node = (map_node *) malloc(sizeof(map_node));
     tmp_node->key = key;
     it->node = internal_map_search(obj, tmp_node);
     free(tmp_node);
 }
 
-bool map_empty(map_t obj) {
+bool map_empty(map_t obj)
+{
     return (NULL == obj->root);
 }
+
 /* Iteration */
-bool map_at_end(map_t UNUSED, map_iter_t *it) {
+bool map_at_end(map_t UNUSED, map_iter_t *it)
+{
     return (NULL == it->node);
 }
-//
+
 /* Remove functions */
-//void map_erase(map_t tree, map_iter_t *node) {
-//TODO
-//}
-// void map_clear(map_t);
-//
-// /* Destructor */
-// void map_delete(map_t);
+void map_erase(map_t obj, map_iter_t *it)
+{
+    internal_map_remove(obj, it->node);
+    //FIXME: How about freeing node?
+}
+
+/* Empty map */
+void map_clear(map_t obj) {
+    internal_map_destroy(obj, NULL, NULL);
+}
+
+/* Destructor */
+void map_delete(map_t obj) {
+    internal_map_destroy(obj, NULL, NULL);
+    free(obj);
+}

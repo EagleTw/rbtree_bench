@@ -7,7 +7,12 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(GCC_FLAGS "-std=c99-s -O2 -W -Wall -Werror")
 
 set(EXECUTABLE_OUTPUT_PATH build)
-set(HEADER_FILES src/rb.h)
+set(
+  HEADER_FILES
+  src/rb.h
+  src/minibench.h
+  src/ministat.h
+)
 
 add_executable(
     rb
