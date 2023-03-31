@@ -637,8 +637,8 @@
 
 typedef struct node_ map_node;
 typedef struct node_ {
-    int *key;
-    int *val;
+    void *key;
+    void *val;
     rb_node(map_node) link;
 } map_node;
 
