@@ -36,8 +36,7 @@ BENCHMARK(20,
     /* I know MT19937 might be better */
     srand((unsigned) time(NULL));
     for (int i = 0; i < 1e7; i++) {
-        int pos_a = rand() % NNODES;
-        int pos_b = rand() % NNODES;
+        int pos_a = rand() % NNODES; int pos_b = rand() % NNODES;
         swap(&key[pos_a], &key[pos_b]);
         swap(&val[pos_a], &val[pos_b]);
     }
@@ -53,4 +52,5 @@ BENCHMARK(20,
     //TODO: Write remove test
 
     TIMED("map_delete", map_delete(tree););
+
 )

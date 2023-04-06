@@ -634,6 +634,8 @@
         x_prefix##destroy_recurse(rbtree, rbtree->root, cb, arg);              \
         rbtree->root = NULL;                                                   \
     }
+//TODO: sanity check
+// add traverse function
 
 typedef struct node_ map_node;
 typedef struct node_ {
