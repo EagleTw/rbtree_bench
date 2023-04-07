@@ -14,7 +14,7 @@ void swap(int *x, int *y)
     *y = tmp;
 }
 
-enum { NNODES = 30};
+enum { NNODES = 30 };
 
 bool test_mix_insert() {
     bool failed = false;
@@ -41,17 +41,28 @@ bool test_mix_insert() {
         swap(&val[pos_a], &val[pos_b]);
     }
 
-    for (int i = 0; i < NNODES; i++) {
-        map_iter_t* my_it = NULL;
+    // add first 1/2 items
+    for (int i = 0; i < NNODES/2; i++) {
+        map_iter_t my_it;
         map_insert(tree, key + i, val + i);
-        map_find(tree, my_it, key + i);
-        if (NULL == my_it) { failed = 1; }
+        map_find(tree, &my_it, key + i);
+        if (NULL == my_it.node) { failed = true; }
+        //printf("| index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n", i, key[i], *(int*)(my_it.node->val), failed);
     }
 
+    /* TODO: remove first 1/4 items */
+    /* TODO: add the rest */
+    /* TODO: remove not exsites items */
+
+    return !failed;
 }
 
 int main(int argc, char *argv[])
 {
     printf("=== start testfile ====\n");
+
+    bool passed = test_mix_insert();
+    printf("test pass? %d\n", passed);
+
     return 0;
 }
