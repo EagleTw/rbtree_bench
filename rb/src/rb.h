@@ -298,9 +298,11 @@
             } else {                                                           \
                 pathp[1].node = rbtn_right_get(x_type, x_field, pathp->node);  \
                 if (cmp == 0) {                                                \
+        printf("<yp>HIT!!\n");\
                     /* Find node's successor, in preparation for swap. */      \
                     pathp->cmp = 1;                                            \
                     nodep = pathp;                                             \
+        /* BUG: Probem here */ \
                     for (pathp++; pathp->node; pathp++) {                      \
                         pathp->cmp = -1;                                       \
                         pathp[1].node =                                        \
@@ -310,7 +312,9 @@
                 }                                                              \
             }                                                                  \
         }                                                                      \
+        printf("<yp>1\n");\
         assert(nodep->node == node);                                           \
+        printf("<yp>2\n");\
         pathp--;                                                               \
         if (pathp->node != node) {                                             \
             /* Swap node with its successor. */                                \
@@ -706,8 +710,14 @@ bool map_at_end(map_t UNUSED, map_iter_t *it)
 /* Remove functions */
 void map_erase(map_t obj, map_iter_t *it)
 {
-    internal_map_remove(obj, it->node);
+    if(NULL == it->node)
+        return;
+    map_node *tmp_node = (map_node *) malloc(sizeof(map_node));
+    tmp_node = internal_map_search(obj, it->node);
+    printf("tmp node %p\t: %p : %d\n", tmp_node, tmp_node->val, *(int*)(tmp_node->val));
+    printf("it->node %p\t: %p : %d\n", it->node, it->node->val, *(int*)(it->node->val));
     // FIXME: How about freeing node?
+    internal_map_remove(obj, it->node);
 }
 
 /* Empty map */
