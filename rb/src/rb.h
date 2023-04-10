@@ -634,8 +634,8 @@
         x_prefix##destroy_recurse(rbtree, rbtree->root, cb, arg);              \
         rbtree->root = NULL;                                                   \
     }
-//TODO: sanity check
-// add traverse function
+// TODO: sanity check
+//  add traverse function
 
 typedef struct node_ map_node;
 typedef struct node_ {
@@ -707,16 +707,18 @@ bool map_at_end(map_t UNUSED, map_iter_t *it)
 void map_erase(map_t obj, map_iter_t *it)
 {
     internal_map_remove(obj, it->node);
-    //FIXME: How about freeing node?
+    // FIXME: How about freeing node?
 }
 
 /* Empty map */
-void map_clear(map_t obj) {
+void map_clear(map_t obj)
+{
     internal_map_destroy(obj, NULL, NULL);
 }
 
 /* Destructor */
-void map_delete(map_t obj) {
+void map_delete(map_t obj)
+{
     internal_map_destroy(obj, NULL, NULL);
     free(obj);
 }

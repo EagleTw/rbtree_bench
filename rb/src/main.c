@@ -17,7 +17,8 @@ void swap(int *x, int *y)
 
 enum { NNODES = 1000 * 1000 };
 
-BENCHMARK(20,
+BENCHMARK(
+    20,
 
     map_t tree = map_init(int, int, uint_key_cmp);
 
@@ -36,7 +37,8 @@ BENCHMARK(20,
     /* I know MT19937 might be better */
     srand((unsigned) time(NULL));
     for (int i = 0; i < 1e7; i++) {
-        int pos_a = rand() % NNODES; int pos_b = rand() % NNODES;
+        int pos_a = rand() % NNODES;
+        int pos_b = rand() % NNODES;
         swap(&key[pos_a], &key[pos_b]);
         swap(&val[pos_a], &val[pos_b]);
     }
@@ -49,7 +51,7 @@ BENCHMARK(20,
         "map_search", map_iter_t my_it;
         for (int i = 0; i < NNODES; i++) { map_find(tree, &my_it, key + i); });
 
-    //TODO: Write remove test
+    // TODO: Write remove test
 
     TIMED("map_delete", map_delete(tree););
 
