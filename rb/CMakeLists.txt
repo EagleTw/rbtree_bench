@@ -16,5 +16,5 @@ set(SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/ministat.h
 )
 
-add_executable(rb src/main.c)
-add_executable(rb_test src/rb_test.c)
+add_executable(rb src/main.c ${SOURCES})
+add_executable(rb_test src/rb_test.c ${SOURCES})

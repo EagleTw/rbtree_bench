@@ -62,7 +62,7 @@ bool test_mix_insert()
         map_iter_t my_it;
         my_it.node->key = key + i;
         my_it.node->val = val + i;
-        //FIXME: Assertion fail
+        // FIXME: Assertion fail
         map_erase(tree, &my_it);
         map_find(tree, &my_it, key + i);
         if (NULL != my_it.node) {

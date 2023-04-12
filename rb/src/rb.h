@@ -1,5 +1,9 @@
+#ifndef _RB_H
+#define _RB_H
+
 #pragma once
 
+#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -298,11 +302,11 @@
             } else {                                                           \
                 pathp[1].node = rbtn_right_get(x_type, x_field, pathp->node);  \
                 if (cmp == 0) {                                                \
-        printf("<yp>HIT!!\n");\
+                    printf("<yp>HIT!!\n");                                     \
                     /* Find node's successor, in preparation for swap. */      \
                     pathp->cmp = 1;                                            \
                     nodep = pathp;                                             \
-        /* BUG: Probem here */ \
+                    /* BUG: Probem here */                                     \
                     for (pathp++; pathp->node; pathp++) {                      \
                         pathp->cmp = -1;                                       \
                         pathp[1].node =                                        \
@@ -312,9 +316,9 @@
                 }                                                              \
             }                                                                  \
         }                                                                      \
-        printf("<yp>1\n");\
+        printf("<yp>1\n");                                                     \
         assert(nodep->node == node);                                           \
-        printf("<yp>2\n");\
+        printf("<yp>2\n");                                                     \
         pathp--;                                                               \
         if (pathp->node != node) {                                             \
             /* Swap node with its successor. */                                \
@@ -638,8 +642,6 @@
         x_prefix##destroy_recurse(rbtree, rbtree->root, cb, arg);              \
         rbtree->root = NULL;                                                   \
     }
-// TODO: sanity check
-//  add traverse function
 
 typedef struct node_ map_node;
 typedef struct node_ {
@@ -670,6 +672,7 @@ typedef struct {
     size_t count;
 } map_iter_t;
 
+/* New function */
 map_t map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 {
     map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
@@ -710,12 +713,14 @@ bool map_at_end(map_t UNUSED, map_iter_t *it)
 /* Remove functions */
 void map_erase(map_t obj, map_iter_t *it)
 {
-    if(NULL == it->node)
+    if (NULL == it->node)
         return;
     map_node *tmp_node = (map_node *) malloc(sizeof(map_node));
     tmp_node = internal_map_search(obj, it->node);
-    printf("tmp node %p\t: %p : %d\n", tmp_node, tmp_node->val, *(int*)(tmp_node->val));
-    printf("it->node %p\t: %p : %d\n", it->node, it->node->val, *(int*)(it->node->val));
+    printf("tmp node %p\t: %p : %d\n", tmp_node, tmp_node->val,
+           *(int *) (tmp_node->val));
+    printf("it->node %p\t: %p : %d\n", it->node, it->node->val,
+           *(int *) (it->node->val));
     // FIXME: How about freeing node?
     internal_map_remove(obj, it->node);
 }
@@ -732,3 +737,5 @@ void map_delete(map_t obj)
     internal_map_destroy(obj, NULL, NULL);
     free(obj);
 }
+
+#endif /* _RB_H */
