@@ -51,14 +51,15 @@ bool test_mix_insert()
         if (NULL == my_it.node) {
             failed = true;
         }
-        printf("| index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n", i,
-               key[i], *(int *) (my_it.node->val), failed);
+        printf("Insert | index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n",
+               i, key[i], *(int *) (my_it.node->val), failed);
     }
 
     printf("\n==============================\n");
 
     /* remove first 1/4 items */
     for (int i = 0; i < NNODES / 4; i++) {
+        // FIXME: crash because not allocated space
         map_iter_t my_it;
         my_it.node->key = key + i;
         my_it.node->val = val + i;
@@ -68,8 +69,8 @@ bool test_mix_insert()
         if (NULL != my_it.node) {
             failed = true;
         }
-        //        printf("| index: %d\t| key: %d\t| value: %d\t| failed?:
-        //        %d\t|\n", i, key[i], *(int*)(my_it.node->val), failed);
+        printf("| index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n", i,
+               key[i], *(int *) (my_it.node->val), failed);
     }
 
     /* TODO: add the rest */

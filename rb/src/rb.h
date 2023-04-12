@@ -288,6 +288,10 @@
     }                                                                          \
     x_attr void x_prefix##remove(x_rbt_type *rbtree, x_type *node)             \
     {                                                                          \
+        /* In the original use, "node" needs to be the node for original       \
+         * key and value. Howerver, this might not be what we want in general  \
+         * map.                                                                \
+         */                                                                    \
         x_prefix##path_entry_t path[RB_MAX_DEPTH];                             \
         x_prefix##path_entry_t *pathp;                                         \
         x_prefix##path_entry_t *nodep;                                         \
@@ -722,6 +726,9 @@ void map_erase(map_t obj, map_iter_t *it)
     printf("it->node %p\t: %p : %d\n", it->node, it->node->val,
            *(int *) (it->node->val));
     // FIXME: How about freeing node?
+
+    // FIXME: sould be
+    // internal_map_remove(obj, tmp_node);
     internal_map_remove(obj, it->node);
 }
 
