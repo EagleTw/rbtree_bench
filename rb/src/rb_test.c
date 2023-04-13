@@ -51,24 +51,27 @@ bool test_mix_insert()
         if (NULL == my_it.node) {
             failed = true;
         }
-        printf("Insert | index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n",
-               i, key[i], *(int *) (my_it.node->val), failed);
+        printf(
+            "Insert | index: %d\t| it.node->val: %d\t| value: %d\t| failed?: "
+            "%d\t|\n",
+            i, key[i], *(int *) (my_it.node->val), failed);
     }
 
-    printf("\n==============================\n");
+    printf("\n==============================\n\n");
 
     /* remove first 1/4 items */
     for (int i = 0; i < NNODES / 4; i++) {
         map_iter_t my_it;
         map_find(tree, &my_it, key + i);
         map_erase(tree, &my_it);
-        // FIXME: Crash here
         map_find(tree, &my_it, key + i);
-        // if (NULL != my_it->node) {
-        //     failed = true;
-        // }
-        printf("Erase  | index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n",
-               i, key[i], *(int *) (my_it.node->val), failed);
+        if (NULL != my_it.node) {
+            failed = true;
+        }
+        printf(
+            "Erase  | index: %d\t| key: %d\t| it.node: %p\t| "
+            "failed?: %d\t|\n",
+            i, key[i], my_it.node, failed);
     }
 
     /* TODO: add the rest */
