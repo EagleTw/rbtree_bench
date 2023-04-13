@@ -723,7 +723,7 @@ void map_clear(map_t obj)
 /* Destructor */
 void map_delete(map_t obj)
 {
-    internal_map_destroy(obj, NULL, NULL);
+    map_clear(obj);
     free(obj);
 }
 
