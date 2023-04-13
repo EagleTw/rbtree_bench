@@ -288,10 +288,6 @@
     }                                                                          \
     x_attr void x_prefix##remove(x_rbt_type *rbtree, x_type *node)             \
     {                                                                          \
-        /* In the original use, "node" needs to be the node for original       \
-         * key and value. Howerver, this might not be what we want in general  \
-         * map.                                                                \
-         */                                                                    \
         x_prefix##path_entry_t path[RB_MAX_DEPTH];                             \
         x_prefix##path_entry_t *pathp;                                         \
         x_prefix##path_entry_t *nodep;                                         \
@@ -306,11 +302,9 @@
             } else {                                                           \
                 pathp[1].node = rbtn_right_get(x_type, x_field, pathp->node);  \
                 if (cmp == 0) {                                                \
-                    printf("<yp>HIT!!\n");                                     \
                     /* Find node's successor, in preparation for swap. */      \
                     pathp->cmp = 1;                                            \
                     nodep = pathp;                                             \
-                    /* BUG: Probem here */                                     \
                     for (pathp++; pathp->node; pathp++) {                      \
                         pathp->cmp = -1;                                       \
                         pathp[1].node =                                        \
@@ -320,9 +314,7 @@
                 }                                                              \
             }                                                                  \
         }                                                                      \
-        printf("<yp>1\n");                                                     \
         assert(nodep->node == node);                                           \
-        printf("<yp>2\n");                                                     \
         pathp--;                                                               \
         if (pathp->node != node) {                                             \
             /* Swap node with its successor. */                                \
@@ -719,16 +711,6 @@ void map_erase(map_t obj, map_iter_t *it)
 {
     if (NULL == it->node)
         return;
-    map_node *tmp_node = (map_node *) malloc(sizeof(map_node));
-    tmp_node = internal_map_search(obj, it->node);
-    printf("tmp node %p\t: %p : %d\n", tmp_node, tmp_node->val,
-           *(int *) (tmp_node->val));
-    printf("it->node %p\t: %p : %d\n", it->node, it->node->val,
-           *(int *) (it->node->val));
-    // FIXME: How about freeing node?
-
-    // FIXME: sould be
-    // internal_map_remove(obj, tmp_node);
     internal_map_remove(obj, it->node);
 }
 

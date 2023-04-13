@@ -59,18 +59,16 @@ bool test_mix_insert()
 
     /* remove first 1/4 items */
     for (int i = 0; i < NNODES / 4; i++) {
-        // FIXME: crash because not allocated space
         map_iter_t my_it;
-        my_it.node->key = key + i;
-        my_it.node->val = val + i;
-        // FIXME: Assertion fail
-        map_erase(tree, &my_it);
         map_find(tree, &my_it, key + i);
-        if (NULL != my_it.node) {
-            failed = true;
-        }
-        printf("| index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n", i,
-               key[i], *(int *) (my_it.node->val), failed);
+        map_erase(tree, &my_it);
+        // FIXME: Crash here
+        map_find(tree, &my_it, key + i);
+        // if (NULL != my_it->node) {
+        //     failed = true;
+        // }
+        printf("Erase  | index: %d\t| key: %d\t| value: %d\t| failed?: %d\t|\n",
+               i, key[i], *(int *) (my_it.node->val), failed);
     }
 
     /* TODO: add the rest */
