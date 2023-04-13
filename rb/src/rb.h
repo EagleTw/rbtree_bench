@@ -639,6 +639,9 @@
         rbtree->root = NULL;                                                   \
     }
 
+#define map_init(key_type, element_type, __func) \
+    map_new(sizeof(key_type), sizeof(element_type), __func)
+
 typedef struct node_ map_node;
 typedef struct node_ {
     void *key;
@@ -659,9 +662,6 @@ static inline int uint_key_cmp(const map_node *arg0, const map_node *arg1)
 typedef rb_tree(map_node) map_internal_t;
 typedef map_internal_t *map_t;
 rb_gen(static, internal_map_, map_internal_t, map_node, link, uint_key_cmp);
-
-#define map_init(key_type, element_type, __func) \
-    map_new(sizeof(key_type), sizeof(element_type), __func)
 
 typedef struct {
     map_node *prev, *node;
