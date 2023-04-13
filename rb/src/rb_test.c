@@ -65,6 +65,7 @@ bool test_mix_insert()
         map_find(tree, &my_it, key + i);
         if (!map_at_end(tree, &my_it)) {
             map_erase(tree, &my_it);
+            map_find(tree, &my_it, key + i);
             if (NULL != my_it.node) {
                 failed = true;
             }
@@ -99,6 +100,7 @@ bool test_mix_insert()
         map_find(tree, &my_it, key + i);
         if (!map_at_end(tree, &my_it)) {
             map_erase(tree, &my_it);
+            map_find(tree, &my_it, key + i);
             if (NULL != my_it.node) {
                 failed = true;
             }
