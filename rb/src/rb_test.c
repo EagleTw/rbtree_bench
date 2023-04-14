@@ -20,7 +20,7 @@ bool test_mix_insert()
 {
     bool failed = false;
 
-    map_t tree = map_init(int, int, uint_key_cmp);
+    map_t tree = map_init(int, int, map_cmp_uint);
 
     int key[NNODES];
     int val[NNODES];

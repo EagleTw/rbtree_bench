@@ -20,7 +20,7 @@ enum { NNODES = 1000 * 1000 };
 BENCHMARK(
     20,
 
-    map_t tree = map_init(int, int, uint_key_cmp);
+    map_t tree = map_init(int, int, map_cmp_uint);
 
     int key[NNODES];
     int val[NNODES];
