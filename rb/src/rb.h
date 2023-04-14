@@ -642,6 +642,8 @@
 #define map_init(key_type, element_type, __func) \
     map_new(sizeof(key_type), sizeof(element_type), __func)
 
+#define map_iter_value(it, type) (*(type *) (it)->node->val)
+
 typedef struct node_ map_node;
 typedef struct node_ {
     void *key;
@@ -668,7 +670,7 @@ typedef struct {
     size_t count;
 } map_iter_t;
 
-/* New function */
+/* Constructor */
 map_t map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
 {
     map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
