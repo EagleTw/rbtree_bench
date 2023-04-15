@@ -1,6 +1,3 @@
-#ifndef _RB_H
-#define _RB_H
-
 #pragma once
 
 #include <assert.h>
@@ -678,64 +675,21 @@ typedef struct {
 } map_iter_t;
 
 /* Constructor */
-map_t map_new(size_t s1,
-              size_t s2,
-              int (*cmp)(const map_node *, const map_node *))
-{
-    map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
-    internal_map_new(tree);
-    return tree;
-}
+map_t map_new(size_t, size_t, int (*)(const map_node *, const map_node *));
 
 /* Add function */
-bool map_insert(map_t obj, void *key, void *val)
-{
-    map_node *node = (map_node *) malloc(sizeof(map_node));
-    node->key = key;
-    node->val = val;
-    internal_map_insert(obj, node);
-    return true;
-}
+bool map_insert(map_t, void *, void *);
 
 /* Get functions */
-void map_find(map_t obj, map_iter_t *it, void *key)
-{
-    map_node *tmp_node = (map_node *) malloc(sizeof(map_node));
-    tmp_node->key = key;
-    it->node = internal_map_search(obj, tmp_node);
-    free(tmp_node);
-}
-
-bool map_empty(map_t obj)
-{
-    return (NULL == obj->root);
-}
+void map_find(map_t, map_iter_t *, void *);
+bool map_empty(map_t);
 
 /* Iteration */
-bool map_at_end(map_t UNUSED, map_iter_t *it)
-{
-    return (NULL == it->node);
-}
+bool map_at_end(map_t, map_iter_t *);
 
 /* Remove functions */
-void map_erase(map_t obj, map_iter_t *it)
-{
-    if (NULL == it->node)
-        return;
-    internal_map_remove(obj, it->node);
-}
-
-/* Empty map */
-void map_clear(map_t obj)
-{
-    internal_map_destroy(obj, NULL, NULL);
-}
+void map_erase(map_t, map_iter_t *);
+void map_clear(map_t);
 
 /* Destructor */
-void map_delete(map_t obj)
-{
-    map_clear(obj);
-    free(obj);
-}
-
-#endif /* _RB_H */
+void map_delete(map_t);
