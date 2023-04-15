@@ -645,11 +645,11 @@
 #define map_iter_value(it, type) (*(type *) (it)->node->val)
 
 typedef struct node_ map_node;
-typedef struct node_ {
+struct node_ {
     void *key;
     void *val;
     rb_node(map_node) link;
-} map_node;
+};
 
 enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 
