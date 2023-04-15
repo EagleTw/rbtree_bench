@@ -678,7 +678,9 @@ typedef struct {
 } map_iter_t;
 
 /* Constructor */
-map_t map_new(size_t s1, size_t s2, int (*cmp)(const void *, const void *))
+map_t map_new(size_t s1,
+              size_t s2,
+              int (*cmp)(const map_node *, const map_node *))
 {
     map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
     internal_map_new(tree);
