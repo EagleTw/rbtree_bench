@@ -51,7 +51,7 @@ map_t map_new(size_t s1,
 /* Add function */
 bool map_insert(map_t obj, void *key, void *val)
 {
-    map_node *node = (map_node *) malloc(sizeof(map_node));
+    map_node *node = map_create_node(key, val, obj->key_size, obj->val_size);
     node->key = key;
     node->val = val;
     internal_map_insert(obj, node);
@@ -84,12 +84,14 @@ void map_erase(map_t obj, map_iter_t *it)
     if (NULL == it->node)
         return;
     internal_map_remove(obj, it->node);
+    map_delete_node(obj, it->node);
 }
 
 /* Empty map */
 void map_clear(map_t obj)
 {
     internal_map_destroy(obj, NULL, NULL);
+    // FIXME: Not freeing all nodes
 }
 
 /* Destructor */
