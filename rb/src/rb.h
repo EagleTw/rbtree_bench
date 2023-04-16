@@ -226,7 +226,10 @@
         path->node = rbtree->root;                                             \
         for (pathp = path; pathp->node; pathp++) {                             \
             int cmp = pathp->cmp = x_cmp(node, pathp->node);                   \
-            assert(cmp != 0);                                                  \
+            if (cmp == 0) {                                                    \
+                /* assert(cmp != 0); */                                        \
+                break; /* If the key matches something, don't insert */        \
+            }                                                                  \
             if (cmp < 0) {                                                     \
                 pathp[1].node = rbtn_left_get(x_type, x_field, pathp->node);   \
             } else {                                                           \
