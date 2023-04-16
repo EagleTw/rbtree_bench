@@ -44,6 +44,8 @@ map_t map_new(size_t s1,
               int (*cmp)(const map_node *, const map_node *))
 {
     map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
+    tree->key_size = s1;
+    tree->val_size = s2;
     internal_map_new(tree);
     return tree;
 }
@@ -52,8 +54,6 @@ map_t map_new(size_t s1,
 bool map_insert(map_t obj, void *key, void *val)
 {
     map_node *node = map_create_node(key, val, obj->key_size, obj->val_size);
-    node->key = key;
-    node->val = val;
     internal_map_insert(obj, node);
     return true;
 }
