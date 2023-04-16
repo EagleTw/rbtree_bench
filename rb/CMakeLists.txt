@@ -20,3 +20,4 @@ set(SOURCES
 
 add_executable(rb src/main.c ${SOURCES})
 add_executable(rb_test src/rb_test.c ${SOURCES})
+add_executable(rb_test_malloc src/rb_test_malloc.c ${SOURCES})
