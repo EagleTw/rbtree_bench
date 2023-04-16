@@ -1,4 +1,42 @@
 #include "rb.h"
+#include <memory.h>
+
+static map_node *map_create_node(void *key,
+                                 void *value,
+                                 size_t ksize,
+                                 size_t vsize)
+{
+    map_node *node = malloc(sizeof(map_node));
+
+    /* Allocate memory for the keys and values */
+    node->key = malloc(ksize);
+    node->val = malloc(vsize);
+
+    /*
+     * Copy over the key and values
+     *
+     * If the parameter passed in is NULL, make the element blank instead of
+     * a segfault.
+     */
+    if (!key)
+        memset(node->key, 0, ksize);
+    else
+        memcpy(node->key, key, ksize);
+
+    if (!value)
+        memset(node->val, 0, vsize);
+    else
+        memcpy(node->val, value, vsize);
+
+    return node;
+}
+
+static void map_delete_node(map_t UNUSED, map_node *node)
+{
+    free(node->key);
+    free(node->val);
+    free(node);
+}
 
 /* Constructor */
 map_t map_new(size_t s1,
