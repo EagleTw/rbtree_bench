@@ -27,9 +27,11 @@
     }
 
 /* Root structure */
-#define rb_tree(x_type) \
-    struct {            \
-        x_type *root;   \
+#define rb_tree(x_type)  \
+    struct {             \
+        x_type *root;    \
+        size_t key_size; \
+        size_t val_size; \
     }
 
 /* Left accessors */
