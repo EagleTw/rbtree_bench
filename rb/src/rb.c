@@ -90,7 +90,7 @@ void map_erase(map_t obj, map_iter_t *it)
 /* Empty map */
 void map_clear(map_t obj)
 {
-    internal_map_destroy(obj, NULL, NULL);
+    internal_map_destroy(obj, cb, NULL);
     // FIXME: Not freeing all nodes
 }
 

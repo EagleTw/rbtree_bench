@@ -670,6 +670,11 @@ static inline int map_cmp_uint(const map_node *arg0, const map_node *arg1)
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
+static inline void cb(map_node *node, void *UNUSED)
+{
+    free(node);
+}
+
 typedef rb_tree(map_node) map_internal_t;
 typedef map_internal_t *map_t;
 rb_gen(static, internal_map_, map_internal_t, map_node, link, map_cmp_uint);
