@@ -7,7 +7,7 @@ set(CMAKE_VERBOSE_MAKEFILE TRUE)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(GCC_FLAGS "-std=c99-s -O2 -W -Wall -Werror")
 
-#set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Debug)
 #set(CMAKE_BUILD_TYPE Release)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build)
@@ -21,3 +21,4 @@ set(SOURCES
 add_executable(rb src/main.c ${SOURCES})
 add_executable(rb_test src/rb_test.c ${SOURCES})
 add_executable(rb_test_malloc src/rb_test_malloc.c ${SOURCES})
+target_link_libraries(rb -lm)

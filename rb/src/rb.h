@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 
 /* C macro implementation of left-leaning 2-3 red-black trees.  Parent
  * pointers are not used, and color bits are stored in the least significant

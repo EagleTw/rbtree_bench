@@ -18,3 +18,4 @@ add_executable(
     map
     src/main.c
 )
+target_link_libraries(map -lm)
