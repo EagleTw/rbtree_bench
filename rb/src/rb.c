@@ -609,14 +609,14 @@
     }
 
 
-rb_gen(static, internal_map_, map_internal_t, map_node, link, map_cmp_uint);
+rb_gen(static, internal_map_, map_internal_t, map_node_t, link, map_cmp_uint);
 
-static map_node *map_create_node(void *key,
-                                 void *value,
-                                 size_t ksize,
-                                 size_t vsize)
+static map_node_t *map_create_node(void *key,
+                                   void *value,
+                                   size_t ksize,
+                                   size_t vsize)
 {
-    map_node *node = malloc(sizeof(map_node));
+    map_node_t *node = malloc(sizeof(map_node_t));
 
     /* Allocate memory for the keys and values */
     node->key = malloc(ksize);
@@ -641,7 +641,7 @@ static map_node *map_create_node(void *key,
     return node;
 }
 
-static void map_delete_node(map_t UNUSED, map_node *node)
+static void map_delete_node(map_t UNUSED, map_node_t *node)
 {
     free(node->key);
     free(node->val);
@@ -651,7 +651,7 @@ static void map_delete_node(map_t UNUSED, map_node *node)
 /* Constructor */
 map_t map_new(size_t s1,
               size_t s2,
-              int (*cmp)(const map_node *, const map_node *))
+              int (*cmp)(const map_node_t *, const map_node_t *))
 {
     map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
     tree->key_size = s1;
@@ -663,7 +663,7 @@ map_t map_new(size_t s1,
 /* Add function */
 bool map_insert(map_t obj, void *key, void *val)
 {
-    map_node *node = map_create_node(key, val, obj->key_size, obj->val_size);
+    map_node_t *node = map_create_node(key, val, obj->key_size, obj->val_size);
     internal_map_insert(obj, node);
     return true;
 }
@@ -671,7 +671,7 @@ bool map_insert(map_t obj, void *key, void *val)
 /* Get functions */
 void map_find(map_t obj, map_iter_t *it, void *key)
 {
-    map_node *tmp_node = (map_node *) malloc(sizeof(map_node));
+    map_node_t *tmp_node = (map_node_t *) malloc(sizeof(map_node_t));
     tmp_node->key = key;
     it->node = internal_map_search(obj, tmp_node);
     free(tmp_node);

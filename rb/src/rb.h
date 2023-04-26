@@ -3,9 +3,9 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdint.h>
 
 /* C macro implementation of left-leaning 2-3 red-black trees.  Parent
  * pointers are not used, and color bits are stored in the least significant
@@ -35,18 +35,18 @@
         size_t val_size; \
     }
 
-typedef struct node_ map_node;
-struct node_ {
+typedef struct map_node map_node_t;
+struct map_node {
     void *key;
     void *val;
-    rb_node(map_node) link;
+    rb_node(map_node_t) link;
 };
 
-typedef rb_tree(map_node) map_internal_t;
+typedef rb_tree(map_node_t) map_internal_t;
 typedef map_internal_t *map_t;
 
 typedef struct {
-    map_node *prev, *node;
+    map_node_t *prev, *node;
     size_t count;
 } map_iter_t;
 
@@ -55,27 +55,27 @@ typedef struct {
 enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 
 /* Integer comparison */
-static inline int map_cmp_int(const map_node *arg0, const map_node *arg1)
+static inline int map_cmp_int(const map_node_t *arg0, const map_node_t *arg1)
 {
     int *a = (int *) arg0->key, *b = (int *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
 /* Unsigned integer comparison */
-static inline int map_cmp_uint(const map_node *arg0, const map_node *arg1)
+static inline int map_cmp_uint(const map_node_t *arg0, const map_node_t *arg1)
 {
     unsigned int *a = (unsigned int *) arg0->key,
                  *b = (unsigned int *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
-static inline void cb(map_node *node, void *UNUSED)
+static inline void cb(map_node_t *node, void *UNUSED)
 {
     free(node);
 }
 
 /* Constructor */
-map_t map_new(size_t, size_t, int (*)(const map_node *, const map_node *));
+map_t map_new(size_t, size_t, int (*)(const map_node_t *, const map_node_t *));
 
 /* Add function */
 bool map_insert(map_t, void *, void *);
