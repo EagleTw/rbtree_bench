@@ -651,7 +651,7 @@ static void map_delete_node(map_t UNUSED, map_node_t *node)
 /* Constructor */
 map_t map_new(size_t s1,
               size_t s2,
-              int (*cmp)(const map_node_t *, const map_node_t *))
+              int (*UNUSED)(const map_node_t *, const map_node_t *))
 {
     map_t tree = (map_internal_t *) malloc(sizeof(map_internal_t));
     tree->key_size = s1;
