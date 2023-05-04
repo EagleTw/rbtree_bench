@@ -57,15 +57,23 @@ enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 /* Integer comparison */
 static inline int map_cmp_int(const map_node_t *arg0, const map_node_t *arg1)
 {
-    int *a = (int *) arg0->key, *b = (int *) arg1->key;
+    int *a = (int *) arg0->key;
+    int *b = (int *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
 /* Unsigned integer comparison */
 static inline int map_cmp_uint(const map_node_t *arg0, const map_node_t *arg1)
 {
-    unsigned int *a = (unsigned int *) arg0->key,
-                 *b = (unsigned int *) arg1->key;
+    unsigned int *a = (unsigned int *) arg0->key;
+    unsigned int *b = (unsigned int *) arg1->key;
+    return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
+}
+
+static inline int map_cmp_long(const map_node_t *arg0, const map_node_t *arg1)
+{
+    long *a = (long *) arg0->key;
+    long *b = (long *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
