@@ -70,10 +70,10 @@ static inline int map_cmp_uint(const map_node_t *arg0, const map_node_t *arg1)
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
-static inline int map_cmp_long(const map_node_t *arg0, const map_node_t *arg1)
+static inline int map_cmp_sizet(const map_node_t *arg0, const map_node_t *arg1)
 {
-    long *a = (long *) arg0->key;
-    long *b = (long *) arg1->key;
+    size_t *a = (size_t *) arg0->key;
+    size_t *b = (size_t *) arg1->key;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 

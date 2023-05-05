@@ -20,5 +20,6 @@ set(SOURCES
 
 add_executable(rb src/main.c ${SOURCES})
 add_executable(rb_test src/rb_test.c ${SOURCES})
+add_executable(rb_prof src/rb_prof.c ${SOURCES})
 add_executable(rb_test_malloc src/rb_test_malloc.c ${SOURCES})
 target_link_libraries(rb -lm)
