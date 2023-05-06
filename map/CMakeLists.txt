@@ -14,8 +14,6 @@ set(HEADER_FILES
   src/ministat.h
 )
 
-add_executable(
-    map
-    src/main.c
-)
+add_executable(map src/main.c)
+add_executable(map_bench src/bench.c)
 target_link_libraries(map -lm)

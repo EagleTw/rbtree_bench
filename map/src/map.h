@@ -35,6 +35,13 @@ static inline int map_cmp_uint(const void *arg0, const void *arg1)
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
+/* Unsigned integer comparison */
+static inline int map_cmp_sizet(const void *arg0, const void *arg1)
+{
+    size_t *a = (size_t *) arg0, *b = (size_t *) arg1;
+    return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
+}
+
 /*
  * Store the key, data, and values of each element in the tree.
  * This is the main basis of the entire tree aside from the root struct.
