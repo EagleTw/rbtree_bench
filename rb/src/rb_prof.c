@@ -18,7 +18,9 @@ static void perf_rb(const char *benchmark_id,
                     const size_t scale,
                     const size_t reps)
 {
-    if (reps == 0) {return;}
+    if (reps == 0) {
+        return;
+    }
 
     map_t tree = map_init(long, long, map_cmp_sizet);
 
@@ -48,7 +50,8 @@ static void perf_rb(const char *benchmark_id,
     clock_gettime(CLOCK_MONOTONIC, &after);
     double result = (after.tv_sec - before.tv_sec) * 1000000000UL +
                     (after.tv_nsec - before.tv_nsec);
-    printf("%f, \"%s\", \"%s\", %zu\n", result, benchmark_id, "insert", scale);
+    printf("%f, \"%s\", \"%s\", %zu, %zu\n", result, benchmark_id, "insert",
+           scale, reps);
 
     clock_gettime(CLOCK_MONOTONIC, &before);
     ///* Find */
@@ -59,7 +62,8 @@ static void perf_rb(const char *benchmark_id,
     clock_gettime(CLOCK_MONOTONIC, &after);
     result = (after.tv_sec - before.tv_sec) * 1000000000UL +
              (after.tv_nsec - before.tv_nsec);
-    printf("%f, \"%s\", \"%s\", %zu\n", result, benchmark_id, "find", scale);
+    printf("%f, \"%s\", \"%s\", %zu, %zu\n", result, benchmark_id, "find",
+           scale, reps);
 
     clock_gettime(CLOCK_MONOTONIC, &before);
     ///* Remove */
@@ -73,8 +77,8 @@ static void perf_rb(const char *benchmark_id,
     clock_gettime(CLOCK_MONOTONIC, &after);
     result = (after.tv_sec - before.tv_sec) * 1000000000UL +
              (after.tv_nsec - before.tv_nsec);
-    printf("%f, \"%s\", \"%s\", %zu\n", result, benchmark_id, "erase", scale);
-
+    printf("%f, \"%s\", \"%s\", %zu, %zu\n", result, benchmark_id, "erase",
+           scale, reps);
 
     map_delete(tree);
     free(key);
