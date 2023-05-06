@@ -18,6 +18,8 @@ static void perf_rb(const char *benchmark_id,
                     const size_t scale,
                     const size_t reps)
 {
+    if (reps == 0) {return;}
+
     map_t tree = map_init(long, long, map_cmp_sizet);
 
     size_t *key = malloc(scale * sizeof(size_t));
@@ -36,17 +38,30 @@ static void perf_rb(const char *benchmark_id,
         swap(&val[pos_a], &val[pos_b]);
     }
 
+    struct timespec before;
+    struct timespec after;
+    clock_gettime(CLOCK_MONOTONIC, &before);
     /* Insert */
     for (size_t i = 0; i < scale; i++) {
         map_insert(tree, key + i, val + i);
     }
+    clock_gettime(CLOCK_MONOTONIC, &after);
+    double result = (after.tv_sec - before.tv_sec) * 1000000000UL +
+                    (after.tv_nsec - before.tv_nsec);
+    printf("%f, \"%s\", \"%s\", %zu\n", result, benchmark_id, "insert", scale);
 
+    clock_gettime(CLOCK_MONOTONIC, &before);
     ///* Find */
     for (size_t i = 0; i < scale; i++) {
         map_iter_t my_it;
         map_find(tree, &my_it, key);
     }
+    clock_gettime(CLOCK_MONOTONIC, &after);
+    result = (after.tv_sec - before.tv_sec) * 1000000000UL +
+             (after.tv_nsec - before.tv_nsec);
+    printf("%f, \"%s\", \"%s\", %zu\n", result, benchmark_id, "find", scale);
 
+    clock_gettime(CLOCK_MONOTONIC, &before);
     ///* Remove */
     for (size_t i = 0; i < scale; i++) {
         map_iter_t my_it;
@@ -55,10 +70,17 @@ static void perf_rb(const char *benchmark_id,
             map_erase(tree, &my_it);
         }
     }
+    clock_gettime(CLOCK_MONOTONIC, &after);
+    result = (after.tv_sec - before.tv_sec) * 1000000000UL +
+             (after.tv_nsec - before.tv_nsec);
+    printf("%f, \"%s\", \"%s\", %zu\n", result, benchmark_id, "erase", scale);
+
 
     map_delete(tree);
     free(key);
     free(val);
+
+    perf_rb(benchmark_id, scale, reps - 1);
 }
 
 int main(int argc, char *argv[])
@@ -69,8 +91,8 @@ int main(int argc, char *argv[])
     char benchmark_id[37];
     uuid_unparse_lower(uuid, benchmark_id);
 
-    size_t scale[] = {1e3, 1e4, 1e5, 1e6, 1e7};
-    size_t n_scales = 5;
+    size_t scale[] = {/*1, 1e1, 1e2,*/ 1e3, 1e4, 1e5, 1e6, /*1e7, 1e8*/};
+    size_t n_scales = 4;
     size_t reps = 20;
 
     for (size_t i = 0; i < n_scales; i++) {
