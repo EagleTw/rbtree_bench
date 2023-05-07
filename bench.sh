@@ -1,4 +1,4 @@
 #!/bin/sh
 
-./rb/build/rb_prof | sed -e 's/^/rb, /' > bench.txt
-#./map/build/
+./rb/build/rb_bench | sed -e 's/^/rb, /' > bench.txt
+./map/build/map_bench | sed -e 's/^/map, /' >> bench.txt

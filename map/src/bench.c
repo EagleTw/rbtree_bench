@@ -6,6 +6,7 @@
 #include <uuid/uuid.h>
 
 #include "map.h"
+#include "map.c"
 
 void swap(size_t *x, size_t *y)
 {
