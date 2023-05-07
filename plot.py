@@ -12,11 +12,18 @@ def main():
     df         0       1       2        3          4    5
         testname time(ns) test_id op_type test_scale reps
     '''
-    df = pd.read_table('bench.txt', sep=',', header=None)
+    df = pd.read_table(
+        'bench.txt',
+        sep=',',
+        header=None,
+        names=['name', 'time', 'test_id', 'op_type', 'scale', 'reps']
+        )
+    print(df)
 
-    #TODO: Handle dataframe and plot figure
+    # TODO: Handle dataframe and plot figure
 
     return
+
 
 if __name__ == '__main__':
     main()
