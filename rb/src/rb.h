@@ -36,7 +36,7 @@ struct map_node {
 
 typedef struct rb_tree {
     map_node_t *root;
-    int (*cmp)(void *, void *);
+    int (*cmp)(const map_node_t *, const map_node_t *);
     size_t key_size;
     size_t val_size;
 } map_internal_t;

@@ -172,7 +172,7 @@
 //      x_rbt_type: map_internal_t
 //      x_type: map_node_t
 //      x_field: link
-//      x_cmp: map_cmp_unit
+//      x_cmp: rbtree->cmp
 
 typedef struct {
     map_node_t *node;
@@ -184,21 +184,22 @@ static void internal_map_new(map_internal_t *rbtree)
     rb_new(map_node_t, link, rbtree);
 }
 
+static map_node_t *internal_map_search(map_internal_t *rbtree,
+                                       const map_node_t *key)
+{
+    int cmp;
+    map_node_t *ret = rbtree->root;
+    while (ret && (cmp = (rbtree->cmp)(key, ret)) != 0) {
+        if (cmp < 0) {
+            ret = rbtn_left_get(map_node_t, link, ret);
+        } else {
+            ret = rbtn_right_get(map_node_t, link, ret);
+        }
+    }
+    return ret;
+}
 // ----------------------------------------------------------------------------
 #define rb_gen(x_attr, x_prefix, x_rbt_type, x_type, x_field, x_cmp)           \
-    x_attr x_type *x_prefix##search(x_rbt_type *rbtree, const x_type *key)     \
-    {                                                                          \
-        int cmp;                                                               \
-        x_type *ret = rbtree->root;                                            \
-        while (ret && (cmp = (x_cmp) (key, ret)) != 0) {                       \
-            if (cmp < 0) {                                                     \
-                ret = rbtn_left_get(x_type, x_field, ret);                     \
-            } else {                                                           \
-                ret = rbtn_right_get(x_type, x_field, ret);                    \
-            }                                                                  \
-        }                                                                      \
-        return ret;                                                            \
-    }                                                                          \
     x_attr void x_prefix##insert(x_rbt_type *rbtree, x_type *node)             \
     {                                                                          \
         x_prefix##path_entry_t path[RB_MAX_DEPTH];                             \
