@@ -174,21 +174,18 @@
 //      x_field: link
 //      x_cmp: map_cmp_unit
 
-//typedef struct {
-//    map_node_t *node;
-//    int cmp;
-//} internal_map_path_entry_t;
+typedef struct {
+    map_node_t *node;
+    int cmp;
+} internal_map_path_entry_t;
+
+static void internal_map_new (map_internal_t *rbtree)
+{
+    rb_new(map_node_t, link, rbtree);
+}
 
 // ----------------------------------------------------------------------------
 #define rb_gen(x_attr, x_prefix, x_rbt_type, x_type, x_field, x_cmp)           \
-    typedef struct {                                                           \
-        x_type *node;                                                          \
-        int cmp;                                                               \
-    } x_prefix##path_entry_t;                                                  \
-    x_attr void x_prefix##new (x_rbt_type * rbtree)                            \
-    {                                                                          \
-        rb_new(x_type, x_field, rbtree);                                       \
-    }                                                                          \
     x_attr x_type *x_prefix##search(x_rbt_type *rbtree, const x_type *key)     \
     {                                                                          \
         int cmp;                                                               \
