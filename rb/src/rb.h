@@ -27,14 +27,6 @@
         x_type *left, *right_red; \
     }
 
-/* Root structure */
-#define rb_tree(x_type)  \
-    struct {             \
-        x_type *root;    \
-        size_t key_size; \
-        size_t val_size; \
-    }
-
 typedef struct map_node map_node_t;
 struct map_node {
     void *key;
@@ -42,7 +34,13 @@ struct map_node {
     rb_node(map_node_t) link;
 };
 
-typedef rb_tree(map_node_t) map_internal_t;
+typedef struct rb_tree {
+    map_node_t *root;
+    int (*cmp)(void *, void *);
+    size_t key_size;
+    size_t val_size;
+} map_internal_t;
+
 typedef map_internal_t *map_t;
 
 typedef struct {

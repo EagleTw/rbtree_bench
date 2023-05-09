@@ -179,7 +179,7 @@ typedef struct {
     int cmp;
 } internal_map_path_entry_t;
 
-static void internal_map_new (map_internal_t *rbtree)
+static void internal_map_new(map_internal_t *rbtree)
 {
     rb_new(map_node_t, link, rbtree);
 }
