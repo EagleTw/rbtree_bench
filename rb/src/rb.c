@@ -164,6 +164,22 @@
  *               has begun.
  *         arg : Opaque pointer passed to cb().
  */
+
+// ----------------------------------------------------------------------------
+// look up:
+//      x_attr: static
+//      x_prefix: internal_map_
+//      x_rbt_type: map_internal_t
+//      x_type: map_node_t
+//      x_field: link
+//      x_cmp: map_cmp_unit
+
+//typedef struct {
+//    map_node_t *node;
+//    int cmp;
+//} internal_map_path_entry_t;
+
+// ----------------------------------------------------------------------------
 #define rb_gen(x_attr, x_prefix, x_rbt_type, x_type, x_field, x_cmp)           \
     typedef struct {                                                           \
         x_type *node;                                                          \
