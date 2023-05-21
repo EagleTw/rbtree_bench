@@ -72,15 +72,6 @@ static inline void rbt_node_init(map_node_t *node)
         rbtn_right_set((r_node), (x_node));                \
     } while (0)
 
-// ----------------------------------------------------------------------------
-// look up:
-//      x_attr: static
-//      x_prefix: internal_map_
-//      x_rbt_type: map_internal_t
-//      x_type: map_node_t
-//      x_field: link
-//      x_cmp: rbtree->cmp
-
 typedef struct {
     map_node_t *node;
     int cmp;
