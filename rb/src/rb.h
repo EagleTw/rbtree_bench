@@ -1,37 +1,33 @@
+/*
+ * rv32emu is freely redistributable under the MIT License. See the file
+ * "LICENSE" for information on usage and redistribution of this file.
+ */
+
+/*
+ * C Implementation for C++ std::map using red-black tree.
+ *
+ * Any data type can be stored in a map, just like std::map.
+ * A map instance requires the specification of two file types:
+ *   1. the key;
+ *   2. what data type the tree node will store;
+ *
+ * It will also require a comparison function to sort the tree.
+ */
+
 #pragma once
 
-#include <assert.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
-
-/* C macro implementation of left-leaning 2-3 red-black trees.  Parent
- * pointers are not used, and color bits are stored in the least significant
- * bit of right-child pointers, thus making node linkage as compact as is
- * possible for red-black trees.
- */
-
-/* Each node in the RB tree consumes at least 1 byte of space (for the linkage
- * if nothing else, so there are a maximum of sizeof(void *) << 3 rb tree nodes
- * in any process (and thus, at most sizeof(void *) << 3 nodes in any rb tree).
- * The choice of algorithm bounds the depth of a tree to twice the binary log of
- * the number of elements in the tree; the following bound follows.
- */
-#define RB_MAX_DEPTH (sizeof(void *) << 4)
-
-/* Node structure */
-#define rb_node(x_type)           \
-    struct {                      \
-        x_type *left, *right_red; \
-    }
 
 typedef struct map_node map_node_t;
 struct map_node {
     void *key;
     void *val;
-    rb_node(map_node_t) link;
+    struct {
+        map_node_t *left, *right_red;
+    } link;
 };
 
 typedef struct rb_tree {
@@ -52,32 +48,29 @@ typedef struct {
 
 enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 
+enum RbtnodeColor { BLACK = 0, RED = 1 };
+
 /* Integer comparison */
-static inline int map_cmp_int(const map_node_t *arg0, const map_node_t *arg1)
+static inline int map_cmp_int(const void *arg0, const void *arg1)
 {
-    int *a = (int *) arg0->key;
-    int *b = (int *) arg1->key;
+    int *a = (int *) arg0;
+    int *b = (int *) arg1;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
 /* Unsigned integer comparison */
-static inline int map_cmp_uint(const map_node_t *arg0, const map_node_t *arg1)
+static inline int map_cmp_uint(const void *arg0, const void *arg1)
 {
-    unsigned int *a = (unsigned int *) arg0->key;
-    unsigned int *b = (unsigned int *) arg1->key;
+    unsigned int *a = (unsigned int *) arg0;
+    unsigned int *b = (unsigned int *) arg1;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
-static inline int map_cmp_sizet(const map_node_t *arg0, const map_node_t *arg1)
+static inline int map_cmp_sizet(const void *arg0, const void *arg1)
 {
-    size_t *a = (size_t *) arg0->key;
-    size_t *b = (size_t *) arg1->key;
+    size_t *a = (size_t *) arg0;
+    size_t *b = (size_t *) arg1;
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
-}
-
-static inline void cb(map_node_t *node, void *UNUSED)
-{
-    free(node);
 }
 
 /* Constructor */
