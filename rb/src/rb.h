@@ -30,14 +30,14 @@ struct map_node {
     } link;
 };
 
-typedef struct rb_tree {
+typedef struct {
     map_node_t *root;
-    int (*cmp)(const map_node_t *, const map_node_t *);
+    int (*cmp)(const void *, const void *);
     size_t key_size;
     size_t val_size;
-} map_internal_t;
+} map_head_t;
 
-typedef map_internal_t *map_t;
+typedef map_head_t *map_t;
 
 typedef struct {
     map_node_t *prev, *node;
@@ -48,7 +48,7 @@ typedef struct {
 
 enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
 
-enum RbtnodeColor { BLACK = 0, RED = 1 };
+typedef enum { RB_BLACK = 0, RB_RED } map_color_t;
 
 /* Integer comparison */
 static inline int map_cmp_int(const void *arg0, const void *arg1)
@@ -66,15 +66,8 @@ static inline int map_cmp_uint(const void *arg0, const void *arg1)
     return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
 }
 
-static inline int map_cmp_sizet(const void *arg0, const void *arg1)
-{
-    size_t *a = (size_t *) arg0;
-    size_t *b = (size_t *) arg1;
-    return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
-}
-
 /* Constructor */
-map_t map_new(size_t, size_t, int (*)(const map_node_t *, const map_node_t *));
+map_t map_new(size_t, size_t, int (*)(const void *, const void *));
 
 /* Add function */
 bool map_insert(map_t, void *, void *);
