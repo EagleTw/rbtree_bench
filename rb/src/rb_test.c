@@ -52,9 +52,9 @@ bool test_mix_insert()
             failed = true;
         }
         printf(
-            "Insert | index: %d\t| it.node->val: %d\t| value: %d\t| failed?: "
+            "Insert | index: %d\t| it.node->data: %d\t| value: %d\t| failed?: "
             "%d\t|\n",
-            i, key[i], *(int *) (my_it.node->val), failed);
+            i, key[i], *(int *) (my_it.node->data), failed);
     }
 
     printf("\n==============================\n\n");
@@ -87,9 +87,9 @@ bool test_mix_insert()
             failed = true;
         }
         printf(
-            "Insert | index: %d\t| it.node->val: %d\t| value: %d\t| failed?: "
+            "Insert | index: %d\t| it.node->data: %d\t| value: %d\t| failed?: "
             "%d\t|\n",
-            i, key[i], *(int *) (my_it.node->val), failed);
+            i, key[i], *(int *) (my_it.node->data), failed);
     }
 
     printf("\n==============================\n\n");

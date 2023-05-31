@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
         map_find(tree, &it, &i);
         if (!map_at_end(tree, &it)) {
             printf("find\t(key: %d, value: %d),\taddr (%p, %p)\n", i,
-                   *(int *) it.node->val, &i, val + i);
+                   *(int *) it.node->data, &i, val + i);
         } else {
             printf("find xxx\t(key: %d, value: %d),\taddr (%p, %p)\n", i, 0, &i,
                    val + i);
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
         map_find(tree, &it, &j);
         if (!map_at_end(tree, &it)) {
             printf("find\t(key: %d, value: %d),\taddr (%p, %p)\n", j,
-                   *(int *) it.node->val, &j, val + j);
+                   *(int *) it.node->data, &j, val + j);
         } else {
             printf("find xxx\t(key: %d, value: %d),\taddr (%p, %p)\n", j, 0, &j,
                    val + j);

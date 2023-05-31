@@ -14,6 +14,13 @@ void swap(size_t *x, size_t *y)
     *y = tmp;
 }
 
+static inline int map_cmp_sizet(const void *arg0, const void *arg1)
+{
+    size_t *a = (size_t *) arg0;
+    size_t *b = (size_t *) arg1;
+    return (*a < *b) ? _CMP_LESS : (*a > *b) ? _CMP_GREATER : _CMP_EQUAL;
+}
+
 static void perf_rb(const char *benchmark_id,
                     const size_t scale,
                     const size_t reps)

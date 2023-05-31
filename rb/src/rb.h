@@ -3,40 +3,46 @@
  * "LICENSE" for information on usage and redistribution of this file.
  */
 
-/*
- * C Implementation for C++ std::map using red-black tree.
- *
- * Any data type can be stored in a map, just like std::map.
- * A map instance requires the specification of two file types:
- *   1. the key;
- *   2. what data type the tree node will store;
- *
- * It will also require a comparison function to sort the tree.
- */
-
 #pragma once
 
 #include <stdbool.h>
 #include <stddef.h>
-#include <stdint.h>
-#include <stdlib.h>
 
-typedef struct map_node map_node_t;
-struct map_node {
-    void *key;
-    void *val;
-    struct {
-        map_node_t *left, *right_red;
-    } link;
-};
+/* Store the key, data, and values of each element in the tree.
+ * This is the main basis of the entire tree aside from the root struct.
+ *
+ * @left: pointer to the left child in the tree
+ * @right_red: combination of a pointer to right child and @color (lowest
+ * bit)
+ *
+ * The red-black tree consists of a root and nodes attached to this root.
+ */
+typedef struct map_node {
+    void *key, *data;
+    struct map_node *left, *right_red; /* red-black tree */
+} map_node_t;
 
+/* FIXME: Change to binary representation and utilize a pointer to the node
+ * embedding comparator values similar to 'right_red'.
+ * _CMP_EQUAL   : 00
+ * _CMP_GREATER : 01
+ * _CMP_LESS    : 11
+ */
+typedef enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 } map_cmp_t;
+
+/* FIXME: Avoid relying on key_size and data_size */
+/* FIXME: Encapsulate implementation details in struct map_internal, which
+ * shall appear in src/map.c rather than public header.
+ */
 typedef struct {
     map_node_t *root;
-    int (*cmp)(const void *, const void *);
+    map_cmp_t (*cmp)(const void *, const void *);
+    /* FIXME: Don't expose key_size and data_size in public header */
     size_t key_size;
-    size_t val_size;
+    size_t data_size;
 } map_head_t;
 
+/* FIXME: Avoid multiple typedef */
 typedef map_head_t *map_t;
 
 typedef struct {
@@ -44,14 +50,10 @@ typedef struct {
     size_t count;
 } map_iter_t;
 
-#define map_iter_value(it, type) (*(type *) (it)->node->val)
-
-enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 };
-
-typedef enum { RB_BLACK = 0, RB_RED } map_color_t;
+#define map_iter_value(it, type) (*(type *) (it)->node->data)
 
 /* Integer comparison */
-static inline int map_cmp_int(const void *arg0, const void *arg1)
+static inline map_cmp_t map_cmp_int(const void *arg0, const void *arg1)
 {
     int *a = (int *) arg0;
     int *b = (int *) arg1;
@@ -59,7 +61,7 @@ static inline int map_cmp_int(const void *arg0, const void *arg1)
 }
 
 /* Unsigned integer comparison */
-static inline int map_cmp_uint(const void *arg0, const void *arg1)
+static inline map_cmp_t map_cmp_uint(const void *arg0, const void *arg1)
 {
     unsigned int *a = (unsigned int *) arg0;
     unsigned int *b = (unsigned int *) arg1;
@@ -67,7 +69,7 @@ static inline int map_cmp_uint(const void *arg0, const void *arg1)
 }
 
 /* Constructor */
-map_t map_new(size_t, size_t, int (*)(const void *, const void *));
+map_t map_new(size_t, size_t, map_cmp_t (*cmp)(const void *, const void *));
 
 /* Add function */
 bool map_insert(map_t, void *, void *);
