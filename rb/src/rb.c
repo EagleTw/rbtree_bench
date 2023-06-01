@@ -286,8 +286,8 @@ static void rb_remove(map_t rb, map_node_t *node)
         } else if (pathp == path) {
             /* the tree only contained one node */
             rb->root = NULL;
+            return;
         }
-        return;
     }
 
     /* The invariant has been established that the node has no right child
