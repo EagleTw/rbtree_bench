@@ -134,8 +134,10 @@ static void rb_insert(map_t rb, map_node_t *node)
     rb_path_entry_t *pathp;
     rb_node_init(node);
 
-    /* FIXME: Improve the comment */
-    /* Wind. */
+    /* Wind.
+     * Traverse through red-black tree node and find the search target node.
+     * The path from root to seach target is recorded in pathp[i].
+     */
     path->node = rb->root;
     for (pathp = path; pathp->node; pathp++) {
         map_cmp_t cmp = pathp->cmp = (rb->cmp)(node->key, pathp->node->key);
@@ -161,8 +163,10 @@ static void rb_insert(map_t rb, map_node_t *node)
      */
     assert(!rb_node_get_left(node));
     assert(!rb_node_get_right(node));
-    /* FIXME: Improve the comment */
-    /* Unwind. */
+    /* Wind.
+     * Traverse through red-black tree node and find the search target node.
+     * The path from root to seach target is recorded in pathp[i].
+     */
     for (pathp--; (uintptr_t) pathp >= (uintptr_t) path; pathp--) {
         map_node_t *cnode = pathp->node;
         if (pathp->cmp == _CMP_LESS) {
@@ -212,8 +216,10 @@ static void rb_remove(map_t rb, map_node_t *node)
     rb_path_entry_t path[RB_MAX_DEPTH];
     rb_path_entry_t *pathp = NULL, *nodep = NULL;
 
-    /* Wind. */
-    /* FIXME: Improve the comment */
+    /* Wind.
+     * Traverse through red-black tree node and find the search target node.
+     * The path from root to seach target is recorded in pathp[i].
+     */
     path->node = rb->root;
     for (pathp = path; pathp->node; pathp++) {
         map_cmp_t cmp = pathp->cmp = (rb->cmp)(node->data, pathp->node->data);
