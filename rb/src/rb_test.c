@@ -111,14 +111,14 @@ bool test_mix_insert()
             i, key[i], my_it.node, failed);
     }
 
-    printf("\n[ori]   tree: %p\t| tree->root: %p\t| Map empty? %d\n", tree,
-           tree->root, map_empty(tree));
+    // printf("\n[ori]   tree: %p\t| tree->root: %p\t| Map empty? %d\n", tree,
+    //        tree->root, map_empty(tree));
     map_clear(tree);
-    printf("[clear] tree: %p\t| tree->root: %p\t| Map empty? %d\n", tree,
-           tree->root, map_empty(tree));
+    // printf("[clear] tree: %p\t| tree->root: %p\t| Map empty? %d\n", tree,
+    //        tree->root, map_empty(tree));
     map_delete(tree);
-    printf("[delete]tree: %p\t| tree->root: %p\t| Map empty? %d\n", tree,
-           tree->root, map_empty(tree));
+    // printf("[delete]tree: %p\t| tree->root: %p\t| Map empty? %d\n", tree,
+    //        tree->root, map_empty(tree));
 
     return !failed;
 }

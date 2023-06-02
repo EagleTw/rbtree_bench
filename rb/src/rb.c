@@ -20,6 +20,16 @@
 
 #include "rb.h"
 
+/* FIXME: Avoid relying on key_size and data_size */
+struct map_head_t {
+    map_node_t *root;
+
+    /* properties */
+    size_t key_size, data_size;
+
+    map_cmp_t (*cmp)(const void *, const void *);
+};
+
 /* Each node in the red-black tree consumes at least 1 byte of space (for the
  * linkage if nothing else), so there are a maximum of sizeof(void *) << 3
  * red-black tree nodes in any process (and thus, at most sizeof(void *) << 3
@@ -163,9 +173,8 @@ static void rb_insert(map_t rb, map_node_t *node)
      */
     assert(!rb_node_get_left(node));
     assert(!rb_node_get_right(node));
-    /* Wind.
-     * Traverse through red-black tree node and find the search target node.
-     * The path from root to seach target is recorded in pathp[i].
+    /* Unwind.
+     * Go from target node back to root node and fix color accordingly
      */
     for (pathp--; (uintptr_t) pathp >= (uintptr_t) path; pathp--) {
         map_node_t *cnode = pathp->node;
@@ -243,7 +252,7 @@ static void rb_remove(map_t rb, map_node_t *node)
 
     pathp--;
     if (pathp->node != node) {
-        /* swwap node with its successor */
+        /* swap node with its successor */
         map_color_t tcolor = rb_node_get_color(pathp->node);
         rb_node_set_color(pathp->node, rb_node_get_color(node));
         rb_node_set_left(pathp->node, rb_node_get_left(node));
@@ -571,7 +580,7 @@ map_t map_new(size_t s1,
               size_t s2,
               map_cmp_t (*cmp)(const void *, const void *))
 {
-    map_t tree = malloc(sizeof(map_head_t));
+    map_t tree = malloc(sizeof(struct map_head_t));
     tree->key_size = s1, tree->data_size = s2;
     tree->cmp = cmp;
     tree->root = NULL;

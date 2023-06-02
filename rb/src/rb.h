@@ -30,20 +30,7 @@ typedef struct map_node {
  */
 typedef enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 } map_cmp_t;
 
-/* FIXME: Avoid relying on key_size and data_size */
-/* FIXME: Encapsulate implementation details in struct map_internal, which
- * shall appear in src/map.c rather than public header.
- */
-typedef struct {
-    map_node_t *root;
-    map_cmp_t (*cmp)(const void *, const void *);
-    /* FIXME: Don't expose key_size and data_size in public header */
-    size_t key_size;
-    size_t data_size;
-} map_head_t;
-
-/* FIXME: Avoid multiple typedef */
-typedef map_head_t *map_t;
+typedef struct map_head_t *map_t;
 
 typedef struct {
     map_node_t *prev, *node;
