@@ -14,7 +14,7 @@ void swap(int *x, int *y)
     *y = tmp;
 }
 
-enum { NNODES = 30 };
+enum { NNODES = 10000 };
 
 bool test_mix_insert()
 {

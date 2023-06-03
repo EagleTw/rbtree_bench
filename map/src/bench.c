@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <uuid/uuid.h>
 
 #include "map.h"
 #include "map.c"
@@ -90,11 +89,7 @@ static void perf_rb(const char *benchmark_id,
 
 int main(int argc, char *argv[])
 {
-    /* generate benchmark id */
-    uuid_t uuid;
-    uuid_generate_random(uuid);
-    char benchmark_id[37];
-    uuid_unparse_lower(uuid, benchmark_id);
+    char* benchmark_id = "no_bm_id";
 
     size_t scale[] = {/*1, 1e1, 1e2,*/ 1e3, 1e4, 1e5, 1e6, /*1e7, 1e8*/};
     size_t n_scales = 4;
