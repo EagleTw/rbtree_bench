@@ -35,8 +35,8 @@ static void perf_rb(const char *benchmark_id,
     }
 
     for (size_t i = 0; i < scale; i++) {
-        size_t pos_a = arc4random() % scale;
-        size_t pos_b = arc4random() % scale;
+        int pos_a = rand() % scale;
+        int pos_b = rand() % scale;
         swap(&key[pos_a], &key[pos_b]);
         swap(&val[pos_a], &val[pos_b]);
     }

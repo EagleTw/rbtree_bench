@@ -41,8 +41,8 @@ static void perf_rb(const char *benchmark_id,
     }
 
     for (size_t i = 0; i < scale; i++) {
-        size_t pos_a = arc4random() % scale;
-        size_t pos_b = arc4random() % scale;
+        int pos_a = rand() % scale;
+        int pos_b = rand() % scale;
         swap(&key[pos_a], &key[pos_b]);
         swap(&val[pos_a], &val[pos_b]);
     }
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
     char benchmark_id[37];
     uuid_unparse_lower(uuid, benchmark_id);
 
-    size_t scale[] = {/*1, 1e1, 1e2,*/ 1e3, 1e4, 1e5, 1e6, /*1e7, 1e8*/};
+    size_t scale[] = {/*1, 1e1, 1e2,*/ 1e3, 1e4, 1e5, 1e6/*, 1e7, 1e8*/};
     size_t n_scales = 4;
     size_t reps = 20;
 
