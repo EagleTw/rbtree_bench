@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "rb.h"
+#include "map.h"
 
 void swap(size_t *x, size_t *y)
 {

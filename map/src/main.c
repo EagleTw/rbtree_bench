@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "map.c"
 #include "map.h"
 #include "minibench.h"
 

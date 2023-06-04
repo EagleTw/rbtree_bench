@@ -12,14 +12,14 @@ set(CMAKE_BUILD_TYPE Debug)
 
 set(EXECUTABLE_OUTPUT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/build)
 set(SOURCES
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/rb.h
-  ${CMAKE_CURRENT_SOURCE_DIR}/src/rb.c
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/map.h
+  ${CMAKE_CURRENT_SOURCE_DIR}/src/map.c
   ${CMAKE_CURRENT_SOURCE_DIR}/src/minibench.h
   ${CMAKE_CURRENT_SOURCE_DIR}/src/ministat.h
 )
 
 add_executable(rb src/main.c ${SOURCES})
-add_executable(rb_test src/rb_test.c ${SOURCES})
-add_executable(rb_bench src/bench.c ${SOURCES})
+add_executable(test-rb src/test-rb.c ${SOURCES})
+add_executable(bench-rb src/bench.c ${SOURCES})
 add_executable(rb_test_malloc src/rb_test_malloc.c ${SOURCES})
 target_link_libraries(rb -lm)

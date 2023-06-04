@@ -18,7 +18,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "rb.h"
+#include "map.h"
 
 /* FIXME: Avoid relying on key_size and data_size */
 struct map_head_t {

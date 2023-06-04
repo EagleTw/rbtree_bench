@@ -6,7 +6,7 @@
 #include <time.h>
 
 #include "minibench.h"
-#include "rb.h"
+#include "map.h"
 
 void swap(int *x, int *y)
 {
