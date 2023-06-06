@@ -546,6 +546,8 @@ static void rb_destroy_recurse(map_t rb, map_node_t *node)
     rb_node_set_left((node), NULL);
     rb_destroy_recurse(rb, rb_node_get_right(node));
     rb_node_set_right((node), NULL);
+    free(node->key);
+    free(node->data);
     free(node);
 }
 
