@@ -17,7 +17,7 @@ set(SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/ministat.h
 )
 
-add_executable(map src/main.c ${SOURCES})
+add_executable(minibench-map src/minibench-map ${SOURCES})
 add_executable(test-map src/test-map.c ${SOURCES})
-add_executable(bench-map src/bench.c ${SOURCES})
-target_link_libraries(map -lm)
+add_executable(bench-map src/bench-map.c ${SOURCES})
+target_link_libraries(minibench-map -lm)

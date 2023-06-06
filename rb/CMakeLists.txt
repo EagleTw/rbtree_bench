@@ -18,8 +18,7 @@ set(SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/src/ministat.h
 )
 
-add_executable(rb src/main.c ${SOURCES})
+add_executable(minibench-rb src/minibench-rb.c ${SOURCES})
 add_executable(test-rb src/test-rb.c ${SOURCES})
-add_executable(bench-rb src/bench.c ${SOURCES})
-add_executable(rb_test_malloc src/rb_test_malloc.c ${SOURCES})
-target_link_libraries(rb -lm)
+add_executable(bench-rb src/bench-rb.c ${SOURCES})
+target_link_libraries(minibench-rb -lm)

@@ -17,9 +17,11 @@ jobs:
       run: cmake .
     - name: make
       run: make
-    - name: test-map
+    - name: test-all-executables
       run: |
           ./rb/build/test-rb
-          ./rb/build/bench-map
-          ./map/build/test-map
           ./rb/build/bench-rb
+          ./rb/build/minibench-rb
+          ./map/build/bench-map
+          ./map/build/test-map
+          ./map/build/minibench-map
