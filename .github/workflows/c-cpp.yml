@@ -1,0 +1,25 @@
+name: C/C++ CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: cmake
+      run: cmake .
+    - name: make
+      run: make
+    - name: test-map
+      run: |
+          ./rb/build/test-rb
+          ./rb/build/bench-map
+          ./map/build/test-map
+          ./rb/build/bench-rb
