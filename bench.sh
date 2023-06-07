@@ -1,6 +1,6 @@
 #!/bin/sh
 
-./rb/build/rb_bench | sed -e 's/^/rb, /' > bench.txt
-./map/build/map_bench | sed -e 's/^/map, /' >> bench.txt
+./rb/build/bench-rb | sed -e 's/^/rb, /' > bench.txt
+./map/build/bench-map | sed -e 's/^/map, /' >> bench.txt
 
 ./plot.py
