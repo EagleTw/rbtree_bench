@@ -7,6 +7,7 @@
  * ----------------------------------------------------------------------------
  *
  * mcubrilo: repurposed as a C header and removed some parts
+ * mcubrilo: free memory before returning from ministat
  *
  */
 
@@ -481,5 +482,11 @@ void ministat(int ci,
         Vitals(ds[i], i + 1);
         if (!flag_n)
             Relative(ds[i], ds[0], ci);
+    }
+
+    for (i = 0; i < nds; i++) {
+        free(ds[i]->name);
+        free(ds[i]->points);
+        free(ds[i]);
     }
 }
