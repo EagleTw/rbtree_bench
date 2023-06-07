@@ -35,6 +35,7 @@ def main():
     scales = df['scale'].unique()
 
     fig, axs = subplots(1, len(op_types))
+    fig.suptitle("linux-map vs jemalloc-map")
 
     for n_ix, name in enumerate(map_names):
         for o_ix, op_type in enumerate(op_types):
@@ -52,6 +53,7 @@ def main():
                 tavg[s_ix] = davg
             axs[o_ix].plot(scales, tmax, "o-", label=name+"::max")
             axs[o_ix].plot(scales, tavg, "o-", label=name+"::avg")
+            print(o_ix, op_type, tmax, tavg)
             axs[o_ix].set_xscale("log")
             #axs[o_ix].set_ylim(0, 1800)
             axs[o_ix].set_title(op_type)
