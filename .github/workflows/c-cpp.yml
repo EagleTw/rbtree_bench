@@ -19,7 +19,7 @@ jobs:
       run: make
     - name: test-all-executables
       run: |
-          ./rb/build/test-rb
-          ./map/build/test-map
-          ./rb/build/bench-rb
-          ./map/build/bench-map
+          ./map-linux/build/test-map-linux
+          ./map-jemalloc/build/test-map-jemalloc
+          ./map-linux/build/bench-map-linux
+          ./map-jemalloc/build/bench-map-jemalloc
