@@ -20,8 +20,6 @@ jobs:
     - name: test-all-executables
       run: |
           ./rb/build/test-rb
-          ./rb/build/bench-rb
-          ./rb/build/minibench-rb
-          ./map/build/bench-map
           ./map/build/test-map
-          ./map/build/minibench-map
+          ./rb/build/bench-rb
+          ./map/build/bench-map
