@@ -20,7 +20,7 @@
 
 #include "map.h"
 
-/* FIXME: Avoid relying on key_size and data_size */
+/* TODO: Avoid relying on key_size and data_size */
 struct map_head_t {
     map_node_t *root;
 
@@ -110,7 +110,7 @@ static inline void rb_node_init(map_node_t *node)
         rb_node_set_right((r_node), (x_node));                   \
     } while (0)
 
-/* FIXME: embed cmp (00, 01, 11) into @node pointer as 'right_red' does */
+/* TODO: embed cmp (00, 01, 11) into @node pointer as 'right_red' does */
 typedef struct {
     map_node_t *node;
     map_cmp_t cmp;
@@ -131,7 +131,7 @@ static inline map_node_t *rb_search(map_t rb, const map_node_t *node)
             ret = rb_node_get_right(ret);
             break;
         default:
-            //__UNREACHABLE;
+            assert(0);
             break;
         }
     }
@@ -159,8 +159,7 @@ static void rb_insert(map_t rb, map_node_t *node)
             pathp[1].node = rb_node_get_right(pathp->node);
             break;
         default:
-            assert(cmp != _CMP_EQUAL);
-            //__UNREACHABLE;
+            /* igore duplicate key */
             break;
         }
     }
@@ -230,7 +229,8 @@ static void rb_remove(map_t rb, map_node_t *node)
      * The path from root to seach target is recorded in pathp[i].
      */
     path->node = rb->root;
-    for (pathp = path; pathp->node; pathp++) {
+    pathp = path;
+    while (pathp->node) {
         map_cmp_t cmp = pathp->cmp = (rb->cmp)(node->data, pathp->node->data);
         if (cmp == _CMP_LESS) {
             pathp[1].node = rb_node_get_left(pathp->node);
@@ -247,6 +247,7 @@ static void rb_remove(map_t rb, map_node_t *node)
                 break;
             }
         }
+        pathp++;
     }
     assert(nodep && nodep->node == node);
 

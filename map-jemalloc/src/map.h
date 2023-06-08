@@ -22,7 +22,7 @@ typedef struct map_node {
     struct map_node *left, *right_red; /* red-black tree */
 } map_node_t;
 
-/* FIXME: Change to binary representation and utilize a pointer to the node
+/* TODO: Change to binary representation and utilize a pointer to the node
  * embedding comparator values similar to 'right_red'.
  * _CMP_EQUAL   : 00
  * _CMP_GREATER : 01
