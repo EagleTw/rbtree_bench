@@ -56,11 +56,11 @@ static void perf_rb(const char *benchmark_id,
     clock_gettime(CLOCK_MONOTONIC, &after);
     double result = (after.tv_sec - before.tv_sec) * 1000000000UL +
                     (after.tv_nsec - before.tv_nsec);
-    printf("%f, \"%s\", \"%s\", %zu, %zu\n", result, benchmark_id, "insert",
-           scale, reps);
+    printf("%f, %s, %s, %zu, %zu\n", result, benchmark_id, "insert", scale,
+           reps);
 
     clock_gettime(CLOCK_MONOTONIC, &before);
-    ///* Find */
+    /* Find */
     for (size_t i = 0; i < scale; i++) {
         map_iter_t my_it;
         map_find(tree, &my_it, key);
@@ -68,11 +68,10 @@ static void perf_rb(const char *benchmark_id,
     clock_gettime(CLOCK_MONOTONIC, &after);
     result = (after.tv_sec - before.tv_sec) * 1000000000UL +
              (after.tv_nsec - before.tv_nsec);
-    printf("%f, \"%s\", \"%s\", %zu, %zu\n", result, benchmark_id, "find",
-           scale, reps);
+    printf("%f, %s, %s, %zu, %zu\n", result, benchmark_id, "find", scale, reps);
 
     clock_gettime(CLOCK_MONOTONIC, &before);
-    ///* Remove */
+    /* Remove */
     for (size_t i = 0; i < scale; i++) {
         map_iter_t my_it;
         map_find(tree, &my_it, key + i);
@@ -83,8 +82,8 @@ static void perf_rb(const char *benchmark_id,
     clock_gettime(CLOCK_MONOTONIC, &after);
     result = (after.tv_sec - before.tv_sec) * 1000000000UL +
              (after.tv_nsec - before.tv_nsec);
-    printf("%f, \"%s\", \"%s\", %zu, %zu\n", result, benchmark_id, "erase",
-           scale, reps);
+    printf("%f, %s, %s, %zu, %zu\n", result, benchmark_id, "erase", scale,
+           reps);
 
     map_delete(tree);
     free(key);
@@ -95,14 +94,13 @@ static void perf_rb(const char *benchmark_id,
 
 int main(int argc, char *argv[])
 {
-    char* benchmark_id = "no_bm_id";
-    size_t scale[] = {/*1, 1e1, 1e2,*/ 1e3, 1e4, 1e5, 1e6/*, 1e7, 1e8*/};
+    char *benchmark_id = "random";
+    size_t scale[] = {/*1, 1e1, 1e2,*/ 1e3, 1e4, 1e5, 1e6 /*, 1e7, 1e8*/};
     size_t n_scales = 4;
     size_t reps = 20;
 
     for (size_t i = 0; i < n_scales; i++) {
         perf_rb(benchmark_id, scale[i], reps);
     }
-
     return 0;
 }

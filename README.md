@@ -37,6 +37,7 @@ Python
 
 * matplot
 * pandas
+* numpy
 
 ### Installation
 

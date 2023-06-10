@@ -20,43 +20,43 @@ def main():
     print('---------- plot bench ----------')
 
     '''
-    df         0       1       2        3          4    5
-        testname time(ns) test_id op_type test_scale reps
+    df         0       1          2       3          4    5
+        testname time(ns) test_type op_type test_scale reps
     '''
     df = pd.read_table(
         'bench.txt',
         sep=',',
         header=None,
-        names=['name', 'time', 'test_id', 'op_type', 'scale', 'reps']
+        names=['name', 'time', 'test_type', 'op_type', 'scale', 'reps']
         )
 
     map_names = df['name'].unique()
     op_types = df['op_type'].unique()
     scales = df['scale'].unique()
+    test_types = df['test_type'].unique()
 
     fig, axs = subplots(1, len(op_types))
-    fig.suptitle("linux-map vs jemalloc-map")
+    fig.suptitle("Compare propsed and old map average operation time")
 
     for n_ix, name in enumerate(map_names):
-        for o_ix, op_type in enumerate(op_types):
-            tmax = [0.0] * len(scales)
-            tavg = [0.0] * len(scales)
-            for s_ix, scale in enumerate(scales):
-                data = df.loc[
-                    (df['name'] == name)
-                    & (df['op_type'] == op_type)
-                    & (df['scale'] == scale)
-                ]
-                dmax = data['time'].max()
-                davg = data['time'].mean()
-                tmax[s_ix] = dmax
-                tavg[s_ix] = davg
-            axs[o_ix].plot(scales, tmax, "o-", label=name+"::max")
-            axs[o_ix].plot(scales, tavg, "o-", label=name+"::avg")
-            print(o_ix, op_type, tmax, tavg)
-            axs[o_ix].set_xscale("log")
-            #axs[o_ix].set_ylim(0, 1800)
-            axs[o_ix].set_title(op_type)
+        for test_ix, test_type in enumerate(test_types):
+            for o_ix, op_type in enumerate(op_types):
+                tavg = [0.0] * len(scales)
+                for s_ix, scale in enumerate(scales):
+                    print(s_ix)
+                    data = df.loc[
+                        (df['name'] == name)
+                        & (df['op_type'] == op_type)
+                        & (df['scale'] == scale)
+                        & (df['test_type'] == test_type)
+                       ]
+                    davg = data['time'].mean()
+                    tavg[s_ix] = davg
+                axs[o_ix].plot(scales, tavg, "o-", label=name + " " + str(test_type) + " operation")
+                print(o_ix, op_type, test_type, tavg)
+                axs[o_ix].set_xscale("log")
+                #axs[o_ix].set_ylim(0, 1800)
+                axs[o_ix].set_title(op_type)
 
     axs[0].set_ylabel("ns/op")
     axs[0].legend()
