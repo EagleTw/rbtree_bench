@@ -3,6 +3,17 @@
  * "LICENSE" for information on usage and redistribution of this file.
  */
 
+/*
+ * C Implementation for C++ std::map using red-black tree.
+ *
+ * Any data type can be stored in a map, just like std::map.
+ * A map instance requires the specification of two file types:
+ *   1. the key;
+ *   2. what data type the tree node will store;
+ *
+ * It will also require a comparison function to sort the tree.
+ */
+
 #pragma once
 
 #include <stdbool.h>
@@ -22,12 +33,6 @@ typedef struct map_node {
     struct map_node *left, *right_red; /* red-black tree */
 } map_node_t;
 
-/* TODO: Change to binary representation and utilize a pointer to the node
- * embedding comparator values similar to 'right_red'.
- * _CMP_EQUAL   : 00
- * _CMP_GREATER : 01
- * _CMP_LESS    : 11
- */
 typedef enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 } map_cmp_t;
 
 typedef struct map_head_t *map_t;

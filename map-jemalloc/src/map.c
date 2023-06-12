@@ -20,6 +20,14 @@
 
 #include "map.h"
 
+#if defined(__GNUC__) || defined(__clang__)
+#define __UNREACHABLE __builtin_unreachable()
+#else /* unspported compilers */
+/* clang-format off */
+#define __UNREACHABLE do { /* nop */ } while (0)
+/* clang-format on */
+#endif
+
 /* TODO: Avoid relying on key_size and data_size */
 struct map_head_t {
     map_node_t *root;
@@ -27,7 +35,7 @@ struct map_head_t {
     /* properties */
     size_t key_size, data_size;
 
-    map_cmp_t (*cmp)(const void *, const void *);
+    map_cmp_t (*comparator)(const void *, const void *);
 };
 
 /* Each node in the red-black tree consumes at least 1 byte of space (for the
@@ -110,7 +118,6 @@ static inline void rb_node_init(map_node_t *node)
         rb_node_set_right((r_node), (x_node));                   \
     } while (0)
 
-/* TODO: embed cmp (00, 01, 11) into @node pointer as 'right_red' does */
 typedef struct {
     map_node_t *node;
     map_cmp_t cmp;
@@ -120,7 +127,7 @@ static inline map_node_t *rb_search(map_t rb, const map_node_t *node)
 {
     map_node_t *ret = rb->root;
     while (ret) {
-        map_cmp_t cmp = (rb->cmp)(node->key, ret->key);
+        map_cmp_t cmp = (rb->comparator)(node->key, ret->key);
         switch (cmp) {
         case _CMP_EQUAL:
             return ret;
@@ -131,7 +138,7 @@ static inline map_node_t *rb_search(map_t rb, const map_node_t *node)
             ret = rb_node_get_right(ret);
             break;
         default:
-            assert(0);
+            __UNREACHABLE;
             break;
         }
     }
@@ -144,13 +151,11 @@ static void rb_insert(map_t rb, map_node_t *node)
     rb_path_entry_t *pathp;
     rb_node_init(node);
 
-    /* Wind.
-     * Traverse through red-black tree node and find the search target node.
-     * The path from root to seach target is recorded in pathp[i].
-     */
+    /* Traverse through red-black tree node and find the search target node. */
     path->node = rb->root;
     for (pathp = path; pathp->node; pathp++) {
-        map_cmp_t cmp = pathp->cmp = (rb->cmp)(node->key, pathp->node->key);
+        map_cmp_t cmp = pathp->cmp =
+            (rb->comparator)(node->key, pathp->node->key);
         switch (cmp) {
         case _CMP_LESS:
             pathp[1].node = rb_node_get_left(pathp->node);
@@ -160,21 +165,16 @@ static void rb_insert(map_t rb, map_node_t *node)
             break;
         default:
             /* igore duplicate key */
+            __UNREACHABLE;
             break;
         }
     }
     pathp->node = node;
 
-    /* The loop invariant maintained is that all nodes with out-of-date
-     * summaries live in path[0], path[1], ..., *pathp.
-     * To maintain this, summarizing the node is necessary, as pathp is
-     * decremented before the first iteration.
-     */
     assert(!rb_node_get_left(node));
     assert(!rb_node_get_right(node));
-    /* Unwind.
-     * Go from target node back to root node and fix color accordingly
-     */
+
+    /* Go from target node back to root node and fix color accordingly */
     for (pathp--; (uintptr_t) pathp >= (uintptr_t) path; pathp--) {
         map_node_t *cnode = pathp->node;
         if (pathp->cmp == _CMP_LESS) {
@@ -224,14 +224,12 @@ static void rb_remove(map_t rb, map_node_t *node)
     rb_path_entry_t path[RB_MAX_DEPTH];
     rb_path_entry_t *pathp = NULL, *nodep = NULL;
 
-    /* Wind.
-     * Traverse through red-black tree node and find the search target node.
-     * The path from root to seach target is recorded in pathp[i].
-     */
+    /* Traverse through red-black tree node and find the search target node. */
     path->node = rb->root;
     pathp = path;
     while (pathp->node) {
-        map_cmp_t cmp = pathp->cmp = (rb->cmp)(node->data, pathp->node->data);
+        map_cmp_t cmp = pathp->cmp =
+            (rb->comparator)(node->data, pathp->node->data);
         if (cmp == _CMP_LESS) {
             pathp[1].node = rb_node_get_left(pathp->node);
         } else {
@@ -586,7 +584,7 @@ map_t map_new(size_t s1,
 {
     map_t tree = malloc(sizeof(struct map_head_t));
     tree->key_size = s1, tree->data_size = s2;
-    tree->cmp = cmp;
+    tree->comparator = cmp;
     tree->root = NULL;
     return tree;
 }
