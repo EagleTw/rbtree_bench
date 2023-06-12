@@ -43,7 +43,6 @@ def main():
             for o_ix, op_type in enumerate(op_types):
                 tavg = [0.0] * len(scales)
                 for s_ix, scale in enumerate(scales):
-                    print(s_ix)
                     data = df.loc[
                         (df['name'] == name)
                         & (df['op_type'] == op_type)
@@ -53,7 +52,7 @@ def main():
                     davg = data['time'].mean()
                     tavg[s_ix] = davg
                 axs[o_ix].plot(scales, tavg, "o-", label=name + " " + str(test_type) + " operation")
-                print(o_ix, op_type, test_type, tavg)
+                print(name, test_type, scale, op_type, tavg)
                 axs[o_ix].set_xscale("log")
                 #axs[o_ix].set_ylim(0, 1800)
                 axs[o_ix].set_title(op_type)

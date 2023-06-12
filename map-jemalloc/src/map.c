@@ -29,7 +29,7 @@
 #endif
 
 /* TODO: Avoid relying on key_size and data_size */
-struct map_head_t {
+struct rb_entry_point {
     map_node_t *root;
 
     /* properties */
@@ -582,7 +582,7 @@ map_t map_new(size_t s1,
               size_t s2,
               map_cmp_t (*cmp)(const void *, const void *))
 {
-    map_t tree = malloc(sizeof(struct map_head_t));
+    map_t tree = malloc(sizeof(struct rb_entry_point));
     tree->key_size = s1, tree->data_size = s2;
     tree->comparator = cmp;
     tree->root = NULL;
