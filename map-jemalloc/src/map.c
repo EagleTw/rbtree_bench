@@ -29,7 +29,7 @@
 #endif
 
 /* TODO: Avoid relying on key_size and data_size */
-struct rb_entry_point {
+struct map_internal {
     map_node_t *root;
 
     /* properties */
@@ -104,14 +104,14 @@ static inline void rb_node_init(map_node_t *node)
 }
 
 /* Internal helper macros */
-#define rb_node_rotate_left(x_type, x_field, x_node, r_node)     \
+#define rb_node_rotate_left(x_node, r_node)                      \
     do {                                                         \
         (r_node) = rb_node_get_right((x_node));                  \
         rb_node_set_right((x_node), rb_node_get_left((r_node))); \
         rb_node_set_left((r_node), (x_node));                    \
     } while (0)
 
-#define rb_node_rotate_right(x_type, x_field, x_node, r_node)    \
+#define rb_node_rotate_right(x_node, r_node)                     \
     do {                                                         \
         (r_node) = rb_node_get_left((x_node));                   \
         rb_node_set_left((x_node), rb_node_get_right((r_node))); \
@@ -187,7 +187,7 @@ static void rb_insert(map_t rb, map_node_t *node)
                 /* fix up 4-node */
                 map_node_t *tnode;
                 rb_node_set_black(leftleft);
-                rb_node_rotate_right(map_node_t, link, cnode, tnode);
+                rb_node_rotate_right(cnode, tnode);
                 cnode = tnode;
             }
         } else {
@@ -205,7 +205,7 @@ static void rb_insert(map_t rb, map_node_t *node)
                 /* lean left */
                 map_node_t *tnode;
                 map_color_t tcolor = rb_node_get_color(cnode);
-                rb_node_rotate_left(map_node_t, link, cnode, tnode);
+                rb_node_rotate_left(cnode, tnode);
                 rb_node_set_color(tnode, tcolor);
                 rb_node_set_red(cnode);
                 cnode = tnode;
@@ -339,9 +339,9 @@ static void rb_remove(map_t rb, map_node_t *node)
                      *          (r)
                      */
                     rb_node_set_black(pathp->node);
-                    rb_node_rotate_right(map_node_t, link, right, tnode);
+                    rb_node_rotate_right(right, tnode);
                     rb_node_set_right(pathp->node, tnode);
-                    rb_node_rotate_left(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_left(pathp->node, tnode);
                 } else {
                     /*      ||
                      *    pathp(r)
@@ -350,7 +350,7 @@ static void rb_remove(map_t rb, map_node_t *node)
                      *           /
                      *          (b)
                      */
-                    rb_node_rotate_left(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_left(pathp->node, tnode);
                 }
 
                 /* Balance restored, but rotation modified subtree root. */
@@ -373,9 +373,9 @@ static void rb_remove(map_t rb, map_node_t *node)
                      */
                     map_node_t *tnode;
                     rb_node_set_black(rightleft);
-                    rb_node_rotate_right(map_node_t, link, right, tnode);
+                    rb_node_rotate_right(right, tnode);
                     rb_node_set_right(pathp->node, tnode);
-                    rb_node_rotate_left(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_left(pathp->node, tnode);
                     /* Balance restored, but rotation modified subtree root,
                      * which may actually be the tree root.
                      */
@@ -399,7 +399,7 @@ static void rb_remove(map_t rb, map_node_t *node)
                      */
                     map_node_t *tnode;
                     rb_node_set_red(pathp->node);
-                    rb_node_rotate_left(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_left(pathp->node, tnode);
                     pathp->node = tnode;
                 }
             }
@@ -423,10 +423,10 @@ static void rb_remove(map_t rb, map_node_t *node)
                      */
                     map_node_t *unode;
                     rb_node_set_black(leftrightleft);
-                    rb_node_rotate_right(map_node_t, link, pathp->node, unode);
-                    rb_node_rotate_right(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_right(pathp->node, unode);
+                    rb_node_rotate_right(pathp->node, tnode);
                     rb_node_set_right(unode, tnode);
-                    rb_node_rotate_left(map_node_t, link, unode, tnode);
+                    rb_node_rotate_left(unode, tnode);
                 } else {
                     /*      ||
                      *    pathp(b)
@@ -439,7 +439,7 @@ static void rb_remove(map_t rb, map_node_t *node)
                      */
                     assert(leftright);
                     rb_node_set_red(leftright);
-                    rb_node_rotate_right(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_right(pathp->node, tnode);
                     rb_node_set_black(tnode);
                 }
 
@@ -470,7 +470,7 @@ static void rb_remove(map_t rb, map_node_t *node)
                     rb_node_set_black(pathp->node);
                     rb_node_set_red(left);
                     rb_node_set_black(leftleft);
-                    rb_node_rotate_right(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_right(pathp->node, tnode);
                     /* Balance restored, but rotation modified subtree root. */
                     assert((uintptr_t) pathp > (uintptr_t) path);
                     if (pathp[-1].cmp == _CMP_LESS)
@@ -503,7 +503,7 @@ static void rb_remove(map_t rb, map_node_t *node)
                      */
                     map_node_t *tnode;
                     rb_node_set_black(leftleft);
-                    rb_node_rotate_right(map_node_t, link, pathp->node, tnode);
+                    rb_node_rotate_right(pathp->node, tnode);
                     /* Balance restored, but rotation modified subtree root,
                      * which may actually be the tree root.
                      */
@@ -556,9 +556,12 @@ static map_node_t *map_create_node(void *key,
                                    size_t vsize)
 {
     map_node_t *node = malloc(sizeof(map_node_t));
+    assert(node);
 
     /* allocate memory for the keys and data */
     node->key = malloc(ksize), node->data = malloc(vsize);
+    assert(node->key);
+    assert(node->data);
 
     /* copy over the key and values.
      * If the parameter passed in is NULL, make the element blank instead of
@@ -582,7 +585,9 @@ map_t map_new(size_t s1,
               size_t s2,
               map_cmp_t (*cmp)(const void *, const void *))
 {
-    map_t tree = malloc(sizeof(struct rb_entry_point));
+    map_t tree = malloc(sizeof(struct map_internal));
+    assert(tree);
+
     tree->key_size = s1, tree->data_size = s2;
     tree->comparator = cmp;
     tree->root = NULL;

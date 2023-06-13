@@ -35,7 +35,7 @@ typedef struct map_node {
 
 typedef enum { _CMP_LESS = -1, _CMP_EQUAL = 0, _CMP_GREATER = 1 } map_cmp_t;
 
-typedef struct rb_entry_point *map_t;
+typedef struct map_internal *map_t;
 
 typedef struct {
     map_node_t *prev, *node;
