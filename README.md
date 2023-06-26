@@ -86,4 +86,4 @@ Run bench
 * [x] Create test for correctness
 * [x] Create bench plot
 * [x] Computational time and memory benchmark
-* [ ] PR
+* [x] PR
